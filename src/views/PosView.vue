@@ -10,7 +10,7 @@ const selectedDrinkId = ref<number | null>(null);
 const selectedSize = ref<Size>('grande');
 const iced = ref(false);
 
-const sizes: Size[] = ['short', 'tall', 'grande', 'venti'];
+const sizes: Size[] = ['short', 'tall', 'grande', 'venti', 'trenta'];
 
 function placeOrder() {
   if (selectedDrinkId.value === null) return;
@@ -29,24 +29,24 @@ function placeOrder() {
     <section>
       <h2>Drink</h2>
       <button
-        v-for="d in drinks"
-        :key="d.id"
-        :class="{ active: selectedDrinkId === d.id }"
-        @click="selectedDrinkId = d.id"
+        v-for="drink in drinks"
+        :key="drink.id"
+        :class="{ active: selectedDrinkId === drink.id }"
+        @click="selectedDrinkId = drink.id"
       >
-        {{ d.name }}
+        {{ drink.name }}
       </button>
     </section>
 
     <section>
       <h2>Size</h2>
       <button
-        v-for="s in sizes"
-        :key="s"
-        :class="{ active: selectedSize === s }"
-        @click="selectedSize = s"
+        v-for="size in sizes"
+        :key="size"
+        :class="{ active: selectedSize === size }"
+        @click="selectedSize = size"
       >
-        {{ s }}
+        {{ size }}
       </button>
     </section>
 

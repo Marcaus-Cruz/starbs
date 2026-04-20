@@ -1,4 +1,4 @@
-export type Size = 'short' | 'tall' | 'grande' | 'venti';
+export type Size = 'short' | 'tall' | 'grande' | 'venti' | 'trenta';
 
 export type IngredientMap = Record<string, { quantity: number; unit: string }>;
 
