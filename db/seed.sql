@@ -66,16 +66,40 @@ CROSS JOIN (VALUES
 WHERE d.name = 'Latte'
 ON CONFLICT DO NOTHING;
 
--- Steps
-INSERT INTO drink_steps (drink_id, step_number, instruction)
-SELECT d.id, s.step_number, s.instruction
+-- Hot latte steps. Placeholders: {shots}, {pumps}, {size}, {flavor}
+-- Step 2 has two variants — one for flavored orders, one for plain — so the
+-- final text changes based on whether a modifier is attached.
+INSERT INTO drink_steps (drink_id, iced, step_number, template, applies_when)
+SELECT d.id, FALSE, s.step_number, s.template, s.applies_when
 FROM drinks d
 CROSS JOIN (VALUES
-  (1, 'Pull the required espresso shots into the cup.'),
-  (2, 'If iced, fill cup with ice; if hot, steam milk to 150°F.'),
-  (3, 'Pour milk over the espresso.'),
-  (4, 'Cap, sleeve, and serve.')
-) AS s(step_number, instruction)
+  (1.0, 'Pull {shots} shots of espresso',                     NULL),
+  (1.5, 'Add {pumps} pumps of {flavor} to the cup',           'has_modifier'),
+  (2.0, 'Pour shots over the {flavor}',                       'has_modifier'),
+  (2.0, 'Pour shots into the cup',                            'no_modifier'),
+  (3.0, 'Pour milk to the {size} line of the steaming pitcher', NULL),
+  (4.0, 'Steam the milk',                                     NULL),
+  (5.0, 'Pour steamed milk onto the espresso',                NULL),
+  (6.0, 'Purge and wipe the steam wand',                      NULL),
+  (7.0, 'Cap, sleeve, and serve',                             NULL)
+) AS s(step_number, template, applies_when)
+WHERE d.name = 'Latte'
+ON CONFLICT DO NOTHING;
+
+-- Iced latte steps. Different flow: ice goes in the cup, cold milk is poured
+-- straight (no steaming), no pitcher.
+INSERT INTO drink_steps (drink_id, iced, step_number, template, applies_when)
+SELECT d.id, TRUE, s.step_number, s.template, s.applies_when
+FROM drinks d
+CROSS JOIN (VALUES
+  (1.0, 'Pull {shots} shots of espresso',                     NULL),
+  (1.5, 'Add {pumps} pumps of {flavor} to the cup',           'has_modifier'),
+  (2.0, 'Pour shots over the {flavor}',                       'has_modifier'),
+  (2.0, 'Pour shots into the cup',                            'no_modifier'),
+  (3.0, 'Fill the cup with ice',                              NULL),
+  (4.0, 'Pour cold milk over the ice to the top',             NULL),
+  (5.0, 'Cap and serve',                                      NULL)
+) AS s(step_number, template, applies_when)
 WHERE d.name = 'Latte'
 ON CONFLICT DO NOTHING;
 
