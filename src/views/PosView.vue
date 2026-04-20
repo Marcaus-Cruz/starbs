@@ -6,18 +6,31 @@ import type { Size } from '../types';
 const router = useRouter();
 
 const drinks = ref([{ id: 1, name: 'Latte' }]);
+const modifiers = ref([{ id: 1, name: 'Vanilla Syrup' }]);
+
 const selectedDrinkId = ref<number | null>(null);
 const selectedSize = ref<Size>('grande');
 const iced = ref(false);
+const selectedModifierIds = ref<number[]>([]);
 
 const sizes: Size[] = ['short', 'tall', 'grande', 'venti', 'trenta'];
+
+function toggleModifier(id: number) {
+  const i = selectedModifierIds.value.indexOf(id);
+  if (i === -1) selectedModifierIds.value.push(id);
+  else selectedModifierIds.value.splice(i, 1);
+}
 
 function placeOrder() {
   if (selectedDrinkId.value === null) return;
   router.push({
     name: 'instructions',
     params: { drinkId: String(selectedDrinkId.value) },
-    query: { size: selectedSize.value, iced: String(iced.value) },
+    query: {
+      size: selectedSize.value,
+      iced: String(iced.value),
+      modifiers: selectedModifierIds.value.join(','),
+    },
   });
 }
 </script>
@@ -55,6 +68,18 @@ function placeOrder() {
         <input type="checkbox" v-model="iced" />
         Iced
       </label>
+    </section>
+
+    <section>
+      <h2>Modifiers</h2>
+      <button
+        v-for="m in modifiers"
+        :key="m.id"
+        :class="{ active: selectedModifierIds.includes(m.id) }"
+        @click="toggleModifier(m.id)"
+      >
+        {{ m.name }}
+      </button>
     </section>
 
     <button class="primary" :disabled="selectedDrinkId === null" @click="placeOrder">

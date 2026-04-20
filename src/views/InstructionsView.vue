@@ -1,28 +1,30 @@
 <script setup lang="ts">
-import { ref, onMounted, computed } from 'vue';
+import { ref, onMounted } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
-import type { Drink, Size } from '../types';
+import type { ResolvedOrder } from '../types';
 
 const route = useRoute();
 const router = useRouter();
 
-const drink = ref<Drink | null>(null);
+const order = ref<ResolvedOrder | null>(null);
 const error = ref<string | null>(null);
 const loading = ref(true);
 
-const size = computed<Size>(() => (route.query.size as Size) ?? 'grande');
-const iced = computed<boolean>(() => route.query.iced === 'true');
-
-const variant = computed(() =>
-  drink.value?.variants.find((v) => v.size === size.value && v.iced === iced.value) ?? null
-);
-
 onMounted(async () => {
   const id = route.params.drinkId as string;
+  const params = new URLSearchParams({
+    size: (route.query.size as string) ?? 'grande',
+    iced: (route.query.iced as string) ?? 'false',
+  });
+  if (route.query.modifiers) params.set('modifiers', route.query.modifiers as string);
+
   try {
-    const res = await fetch(`/api/drinks/${id}`);
-    if (!res.ok) throw new Error(`HTTP ${res.status}`);
-    drink.value = await res.json();
+    const res = await fetch(`/api/drinks/${id}?${params}`);
+    if (!res.ok) {
+      const body = await res.json().catch(() => ({}));
+      throw new Error(body.error ?? `HTTP ${res.status}`);
+    }
+    order.value = await res.json();
   } catch (e) {
     error.value = e instanceof Error ? e.message : 'Failed to load drink';
   } finally {
@@ -38,24 +40,32 @@ onMounted(async () => {
     <p v-if="loading">Loading…</p>
     <p v-else-if="error" class="error">Error: {{ error }}</p>
 
-    <template v-else-if="drink">
-      <h1>{{ drink.name }}</h1>
-      <p class="meta">{{ size }}{{ iced ? ' · iced' : '' }}</p>
+    <template v-else-if="order">
+      <h1>{{ order.name }}</h1>
+      <p class="meta">{{ order.size }}{{ order.iced ? ' · iced' : '' }}</p>
 
-      <section v-if="variant">
+      <section v-if="order.modifiers.length">
+        <h2>Modifiers</h2>
+        <ul>
+          <li v-for="m in order.modifiers" :key="m.id">
+            {{ m.name }} — {{ m.quantity }} {{ m.unit }}
+          </li>
+        </ul>
+      </section>
+
+      <section>
         <h2>Ingredients</h2>
         <ul>
-          <li v-for="(info, name) in variant.ingredients" :key="name">
+          <li v-for="(info, name) in order.ingredients" :key="name">
             {{ name }}: {{ info.quantity }} {{ info.unit }}
           </li>
         </ul>
       </section>
-      <p v-else class="error">No recipe for size={{ size }}, iced={{ iced }}.</p>
 
       <section>
         <h2>Steps</h2>
         <ol>
-          <li v-for="s in drink.steps" :key="s.stepNumber">{{ s.instruction }}</li>
+          <li v-for="s in order.steps" :key="s.stepNumber">{{ s.text }}</li>
         </ol>
       </section>
     </template>
