@@ -35,11 +35,16 @@ function parseModifierNames(v: unknown): string[] {
     .filter((s) => s.length > 0);
 }
 
+// Must match scripts/build-drinks.ts placeholderFor(): lowercased, spaces → _
+function placeholderFor(ingredient: string): string {
+  return ingredient.toLowerCase().replace(/\s+/g, '_');
+}
+
 export default async function handler(req: VercelRequest, res: VercelResponse) {
-  const idParam = req.query.id;
-  const drinkId = Number(Array.isArray(idParam) ? idParam[0] : idParam);
-  if (!Number.isInteger(drinkId) || drinkId <= 0) {
-    return res.status(400).json({ error: 'Invalid drink id' });
+  const nameParam = req.query.name;
+  const drinkName = String(Array.isArray(nameParam) ? nameParam[0] : nameParam ?? '');
+  if (!drinkName) {
+    return res.status(400).json({ error: 'Missing drink name' });
   }
 
   const size = String(req.query.size ?? 'grande');
@@ -50,21 +55,21 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
 
   try {
     const drinkRows = await sql<DrinkRow[]>`
-      SELECT id, name, category FROM drinks WHERE id = ${drinkId}
+      SELECT id, name, category FROM drinks WHERE name = ${drinkName}
     `;
     const drink = drinkRows[0];
-    if (!drink) return res.status(404).json({ error: 'Drink not found' });
+    if (!drink) return res.status(404).json({ error: `Drink not found: ${drinkName}` });
 
     const [recipeRows, stepRows, modifierRows, milkRows] = await Promise.all([
       sql<RecipeRow[]>`
         SELECT size, iced, ingredient, quantity, unit
         FROM drink_recipes
-        WHERE drink_id = ${drinkId} AND size = ${size} AND iced = ${iced}
+        WHERE drink_id = ${drink.id} AND size = ${size} AND iced = ${iced}
       `,
       sql<StepRow[]>`
         SELECT step_number, template, applies_when
         FROM drink_steps
-        WHERE drink_id = ${drinkId} AND iced = ${iced}
+        WHERE drink_id = ${drink.id} AND iced = ${iced}
         ORDER BY step_number
       `,
       modifierNames.length > 0
@@ -121,6 +126,12 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
       flavor: flavorName,
       milk: resolvedMilkName,
     };
+    // Per-ingredient placeholders, e.g. "mocha sauce" qty 4 → {mocha_sauce} = "4"
+    for (const [ingredient, info] of Object.entries(ingredients)) {
+      if (info.quantity !== null) {
+        substitutions[placeholderFor(ingredient)] = String(info.quantity);
+      }
+    }
 
     const steps = stepRows
       .filter((s) => {

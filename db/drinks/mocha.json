@@ -1,0 +1,44 @@
+{
+  "name": "Mocha",
+  "category": "espresso",
+  "hot": {
+    "usesMilk": true,
+    "recipes": {
+      "short":  { "espresso": 1, "mocha sauce": 2 },
+      "tall":   { "espresso": 1, "mocha sauce": 3 },
+      "grande": { "espresso": 2, "mocha sauce": 4 },
+      "venti":  { "espresso": 2, "mocha sauce": 5 }
+    },
+    "steps": [
+      { "n": 1.0, "text": "Pull {shots} shots of espresso" },
+      { "n": 2.0, "text": "Add {mocha_sauce} pumps of mocha sauce to the cup" },
+      { "n": 2.5, "text": "Add {pumps} pumps of {flavor} to the cup", "when": "has_modifier" },
+      { "n": 3.0, "text": "Pour shots over the sauce" },
+      { "n": 4.0, "text": "Pour {milk} to the {size} line of the steaming pitcher" },
+      { "n": 5.0, "text": "Steam the {milk}" },
+      { "n": 6.0, "text": "Pour steamed {milk} onto the espresso" },
+      { "n": 7.0, "text": "Top with whipped cream and mocha sauce" },
+      { "n": 8.0, "text": "Purge and wipe the steam wand" },
+      { "n": 9.0, "text": "Cap, sleeve, and serve" }
+    ]
+  },
+  "iced": {
+    "usesMilk": true,
+    "usesIce": true,
+    "recipes": {
+      "tall":   { "espresso": 1, "mocha sauce": 3 },
+      "grande": { "espresso": 2, "mocha sauce": 4 },
+      "venti":  { "espresso": 3, "mocha sauce": 5 }
+    },
+    "steps": [
+      { "n": 1.0, "text": "Pull {shots} shots of espresso" },
+      { "n": 2.0, "text": "Add {mocha_sauce} pumps of mocha sauce to the cup" },
+      { "n": 2.5, "text": "Add {pumps} pumps of {flavor} to the cup", "when": "has_modifier" },
+      { "n": 3.0, "text": "Pour shots over the sauce" },
+      { "n": 4.0, "text": "Top the cup with ice" },
+      { "n": 5.0, "text": "Pour {milk} over the ice, leaving room for whipped cream" },
+      { "n": 6.0, "text": "Top with whipped cream and mocha sauce" },
+      { "n": 7.0, "text": "Cap and serve" }
+    ]
+  }
+}

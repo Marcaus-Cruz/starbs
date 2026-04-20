@@ -11,7 +11,7 @@ const error = ref<string | null>(null);
 const loading = ref(true);
 
 onMounted(async () => {
-  const id = route.params.drinkId as string;
+  const name = route.params.drinkName as string;
   const params = new URLSearchParams({
     size: (route.query.size as string) ?? 'grande',
     iced: (route.query.iced as string) ?? 'false',
@@ -20,7 +20,7 @@ onMounted(async () => {
   if (route.query.milk) params.set('milk', route.query.milk as string);
 
   try {
-    const res = await fetch(`/api/drinks/${id}?${params}`);
+    const res = await fetch(`/api/drinks/${encodeURIComponent(name)}?${params}`);
     if (!res.ok) {
       const body = await res.json().catch(() => ({}));
       throw new Error(body.error ?? `HTTP ${res.status}`);

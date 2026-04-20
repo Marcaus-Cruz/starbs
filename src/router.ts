@@ -6,7 +6,7 @@ const routes: RouteRecordRaw[] = [
   { path: '/', redirect: '/pos' },
   { path: '/pos', name: 'pos', component: PosView },
   {
-    path: '/instructions/:drinkId',
+    path: '/instructions/:drinkName',
     name: 'instructions',
     component: InstructionsView,
     props: true,

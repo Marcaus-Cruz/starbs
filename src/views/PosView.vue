@@ -2,13 +2,11 @@
 import { ref } from "vue";
 import { useRouter } from "vue-router";
 import type { Size } from "../types";
-import { sizes, milks, modifiers, type Milk, type Modifier } from "../catalog";
+import { drinks, sizes, milks, modifiers, type Drink, type Milk, type Modifier } from "../catalog";
 
 const router = useRouter();
 
-const drinks = ref([{ id: 1, name: "Latte" }]);
-
-const selectedDrinkId = ref<number | null>(null);
+const selectedDrink = ref<Drink | null>(null);
 const selectedSize = ref<Size>("grande");
 const iced = ref(false);
 const selectedModifiers = ref<Modifier[]>([]);
@@ -21,10 +19,10 @@ function toggleModifier(name: Modifier) {
 }
 
 function placeOrder() {
-  if (selectedDrinkId.value === null) return;
+  if (selectedDrink.value === null) return;
   router.push({
     name: "instructions",
-    params: { drinkId: String(selectedDrinkId.value) },
+    params: { drinkName: selectedDrink.value },
     query: {
       size: selectedSize.value,
       iced: String(iced.value),
@@ -43,11 +41,11 @@ function placeOrder() {
       <h2>Drink</h2>
       <button
         v-for="drink in drinks"
-        :key="drink.id"
-        :class="{ active: selectedDrinkId === drink.id }"
-        @click="selectedDrinkId = drink.id"
+        :key="drink"
+        :class="{ active: selectedDrink === drink }"
+        @click="selectedDrink = drink"
       >
-        {{ drink.name }}
+        {{ drink }}
       </button>
     </section>
 
@@ -96,7 +94,7 @@ function placeOrder() {
 
     <button
       class="primary"
-      :disabled="selectedDrinkId === null"
+      :disabled="selectedDrink === null"
       @click="placeOrder"
     >
       Place order
