@@ -1,0 +1,42 @@
+{
+  "name": "Latte",
+  "category": "espresso",
+  "hot": {
+    "usesMilk": true,
+    "recipes": {
+      "short":  { "espresso": 1 },
+      "tall":   { "espresso": 1 },
+      "grande": { "espresso": 2 },
+      "venti":  { "espresso": 2 }
+    },
+    "steps": [
+      { "n": 1.0, "text": "Pull {shots} shots of espresso" },
+      { "n": 1.5, "text": "Add {pumps} pumps of {flavor} to the cup", "when": "has_modifier" },
+      { "n": 2.0, "text": "Pour shots over the {flavor}", "when": "has_modifier" },
+      { "n": 2.0, "text": "Pour shots into the cup", "when": "no_modifier" },
+      { "n": 3.0, "text": "Pour {milk} to the {size} line of the steaming pitcher" },
+      { "n": 4.0, "text": "Steam the {milk}" },
+      { "n": 5.0, "text": "Pour steamed {milk} onto the espresso" },
+      { "n": 6.0, "text": "Purge and wipe the steam wand" },
+      { "n": 7.0, "text": "Cap, sleeve, and serve" }
+    ]
+  },
+  "iced": {
+    "usesMilk": true,
+    "usesIce": true,
+    "recipes": {
+      "tall":   { "espresso": 1 },
+      "grande": { "espresso": 2 },
+      "venti":  { "espresso": 3 }
+    },
+    "steps": [
+      { "n": 1.0, "text": "Pull {shots} shots of espresso" },
+      { "n": 1.5, "text": "Add {pumps} pumps of {flavor} to the cup", "when": "has_modifier" },
+      { "n": 2.0, "text": "Pour shots over the {flavor}", "when": "has_modifier" },
+      { "n": 2.0, "text": "Pour shots into the cup", "when": "no_modifier" },
+      { "n": 3.0, "text": "Top the cup with ice" },
+      { "n": 4.0, "text": "Pour {milk} over the ice to the top" },
+      { "n": 5.0, "text": "Cap and serve" }
+    ]
+  }
+}

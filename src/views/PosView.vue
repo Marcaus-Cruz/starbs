@@ -87,7 +87,7 @@ function placeOrder() {
       <button
         v-for="mod in modifiers"
         :key="mod"
-        :class="{ active: selectedModifiers.includes(mod) }"
+        :class="{ active: selectedModifiers?.includes(mod) }"
         @click="toggleModifier(mod)"
       >
         {{ mod }}
