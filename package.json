@@ -5,6 +5,7 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
+    "dev:api": "vercel dev",
     "build": "vue-tsc -b && vite build",
     "preview": "vite preview",
     "db:migrate": "tsx --env-file=.env.local scripts/run-sql.ts db/schema.sql",
