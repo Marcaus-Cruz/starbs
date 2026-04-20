@@ -9,7 +9,8 @@
     "preview": "vite preview",
     "db:migrate": "tsx --env-file=.env.local scripts/run-sql.ts db/schema.sql",
     "db:seed": "tsx --env-file=.env.local scripts/run-sql.ts db/seed.sql",
-    "db:reset": "tsx --env-file=.env.local scripts/run-sql.ts db/reset.sql db/schema.sql db/seed.sql"
+    "db:reset": "tsx --env-file=.env.local scripts/run-sql.ts db/reset.sql db/schema.sql db/seed.sql",
+    "db:status": "tsx --env-file=.env.local scripts/db-status.ts"
   },
   "dependencies": {
     "postgres": "^3.4.4",
