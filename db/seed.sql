@@ -96,8 +96,17 @@ CROSS JOIN (VALUES
 WHERE d.name = 'Latte'
 ON CONFLICT DO NOTHING;
 
--- Vanilla syrup modifier
-INSERT INTO modifiers (name) VALUES ('Vanilla Syrup')
+-- Modifiers. All standard syrups/sauces use the same per-size pump counts:
+-- short=2, tall=3, grande=4, venti=5. Keep them insertable from one query.
+INSERT INTO modifiers (name) VALUES
+  ('Vanilla Syrup'),
+  ('Sugar-Free Vanilla Syrup'),
+  ('Caramel Syrup'),
+  ('Hazelnut Syrup'),
+  ('Brown Sugar Syrup'),
+  ('Mocha Sauce'),
+  ('White Mocha Sauce'),
+  ('Toasted Coconut Syrup')
 ON CONFLICT (name) DO NOTHING;
 
 INSERT INTO modifier_recipes (modifier_id, size, quantity, unit)
@@ -109,5 +118,4 @@ CROSS JOIN (VALUES
   ('grande', 4),
   ('venti',  5)
 ) AS v(size, pumps)
-WHERE m.name = 'Vanilla Syrup'
 ON CONFLICT DO NOTHING;

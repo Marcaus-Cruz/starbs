@@ -26,13 +26,13 @@ function parseBool(v: unknown): boolean {
   return v === true || v === 'true' || v === '1';
 }
 
-function parseModifierIds(v: unknown): number[] {
+function parseModifierNames(v: unknown): string[] {
   if (!v) return [];
   const raw = Array.isArray(v) ? v[0] : String(v);
   return raw
     .split(',')
-    .map((s) => Number(s.trim()))
-    .filter((n) => Number.isInteger(n) && n > 0);
+    .map((s) => s.trim())
+    .filter((s) => s.length > 0);
 }
 
 export default async function handler(req: VercelRequest, res: VercelResponse) {
@@ -44,7 +44,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
 
   const size = String(req.query.size ?? 'grande');
   const iced = parseBool(req.query.iced);
-  const modifierIds = parseModifierIds(req.query.modifiers);
+  const modifierNames = parseModifierNames(req.query.modifiers);
   const milkRaw = req.query.milk;
   const milkName = milkRaw ? String(Array.isArray(milkRaw) ? milkRaw[0] : milkRaw) : null;
 
@@ -67,12 +67,12 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
         WHERE drink_id = ${drinkId} AND iced = ${iced}
         ORDER BY step_number
       `,
-      modifierIds.length > 0
+      modifierNames.length > 0
         ? sql<ModifierRow[]>`
             SELECT m.id, m.name, mr.quantity, mr.unit
             FROM modifiers m
             JOIN modifier_recipes mr ON mr.modifier_id = m.id
-            WHERE m.id IN ${sql(modifierIds)} AND mr.size = ${size}
+            WHERE m.name IN ${sql(modifierNames)} AND mr.size = ${size}
           `
         : Promise.resolve([] as ModifierRow[]),
       milkName !== null
@@ -108,7 +108,9 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
     const hasModifier = modifierRows.length > 0;
     const firstModifier = modifierRows[0];
     const totalPumps = modifierRows.reduce((sum, m) => sum + Number(m.quantity), 0);
-    const flavorName = firstModifier ? firstModifier.name.replace(/\s*syrup$/i, '').toLowerCase() : 'flavor';
+    const flavorName = firstModifier
+      ? firstModifier.name.replace(/\s*(syrup|sauce)$/i, '').toLowerCase()
+      : 'flavor';
 
     const shots = ingredients['espresso']?.quantity ?? 0;
 

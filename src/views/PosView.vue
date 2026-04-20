@@ -2,37 +2,22 @@
 import { ref } from "vue";
 import { useRouter } from "vue-router";
 import type { Size } from "../types";
+import { sizes, milks, modifiers, type Milk, type Modifier } from "../catalog";
 
 const router = useRouter();
 
 const drinks = ref([{ id: 1, name: "Latte" }]);
-const modifiers = ref([{ id: 1, name: "Vanilla Syrup" }]);
-
-const sizes: Size[] = ["short", "tall", "grande", "venti", "trenta"];
-const milks = [
-  "2%",
-  "Whole",
-  "Nonfat",
-  "Oat",
-  "Almond",
-  "Soy",
-  "Coconut",
-  "Half & Half",
-  "Heavy Cream",
-  "Protein",
-] as const;
-type Milk = (typeof milks)[number];
 
 const selectedDrinkId = ref<number | null>(null);
 const selectedSize = ref<Size>("grande");
 const iced = ref(false);
-const selectedModifierIds = ref<number[]>([]);
+const selectedModifiers = ref<Modifier[]>([]);
 const selectedMilk = ref<Milk>("2%");
 
-function toggleModifier(id: number) {
-  const i = selectedModifierIds.value.indexOf(id);
-  if (i === -1) selectedModifierIds.value.push(id);
-  else selectedModifierIds.value.splice(i, 1);
+function toggleModifier(name: Modifier) {
+  const i = selectedModifiers.value.indexOf(name);
+  if (i === -1) selectedModifiers.value.push(name);
+  else selectedModifiers.value.splice(i, 1);
 }
 
 function placeOrder() {
@@ -43,7 +28,7 @@ function placeOrder() {
     query: {
       size: selectedSize.value,
       iced: String(iced.value),
-      modifiers: selectedModifierIds.value.join(","),
+      modifiers: selectedModifiers.value.join(","),
       milk: selectedMilk.value,
     },
   });
@@ -101,11 +86,11 @@ function placeOrder() {
       <h2>Modifiers</h2>
       <button
         v-for="mod in modifiers"
-        :key="mod.id"
-        :class="{ active: selectedModifierIds.includes(mod.id) }"
-        @click="toggleModifier(mod.id)"
+        :key="mod"
+        :class="{ active: selectedModifiers.includes(mod) }"
+        @click="toggleModifier(mod)"
       >
-        {{ mod.name }}
+        {{ mod }}
       </button>
     </section>
 
