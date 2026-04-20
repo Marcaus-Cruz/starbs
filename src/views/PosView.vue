@@ -1,19 +1,34 @@
 <script setup lang="ts">
-import { ref } from 'vue';
+import { ref, onMounted } from 'vue';
 import { useRouter } from 'vue-router';
-import type { Size } from '../types';
+import type { Size, Milk } from '../types';
 
 const router = useRouter();
 
 const drinks = ref([{ id: 1, name: 'Latte' }]);
 const modifiers = ref([{ id: 1, name: 'Vanilla Syrup' }]);
+const milks = ref<Milk[]>([]);
 
 const selectedDrinkId = ref<number | null>(null);
 const selectedSize = ref<Size>('grande');
 const iced = ref(false);
 const selectedModifierIds = ref<number[]>([]);
+const selectedMilkId = ref<number | null>(null);
 
 const sizes: Size[] = ['short', 'tall', 'grande', 'venti', 'trenta'];
+
+onMounted(async () => {
+  try {
+    const res = await fetch('/api/milks');
+    if (!res.ok) return;
+    const list: Milk[] = await res.json();
+    milks.value = list;
+    const def = list.find((m) => m.isDefault);
+    if (def) selectedMilkId.value = def.id;
+  } catch {
+    // Non-fatal: POS still usable, user just has to pick a milk manually if needed.
+  }
+});
 
 function toggleModifier(id: number) {
   const i = selectedModifierIds.value.indexOf(id);
@@ -23,14 +38,16 @@ function toggleModifier(id: number) {
 
 function placeOrder() {
   if (selectedDrinkId.value === null) return;
+  const query: Record<string, string> = {
+    size: selectedSize.value,
+    iced: String(iced.value),
+    modifiers: selectedModifierIds.value.join(','),
+  };
+  if (selectedMilkId.value !== null) query.milk = String(selectedMilkId.value);
   router.push({
     name: 'instructions',
     params: { drinkId: String(selectedDrinkId.value) },
-    query: {
-      size: selectedSize.value,
-      iced: String(iced.value),
-      modifiers: selectedModifierIds.value.join(','),
-    },
+    query,
   });
 }
 </script>
@@ -68,6 +85,18 @@ function placeOrder() {
         <input type="checkbox" v-model="iced" />
         Iced
       </label>
+    </section>
+
+    <section v-if="milks.length">
+      <h2>Milk</h2>
+      <button
+        v-for="m in milks"
+        :key="m.id"
+        :class="{ active: selectedMilkId === m.id }"
+        @click="selectedMilkId = m.id"
+      >
+        {{ m.name }}
+      </button>
     </section>
 
     <section>

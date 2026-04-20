@@ -6,7 +6,10 @@
   "scripts": {
     "dev": "vite",
     "build": "vue-tsc -b && vite build",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "db:migrate": "tsx --env-file=.env.local scripts/run-sql.ts db/schema.sql",
+    "db:seed": "tsx --env-file=.env.local scripts/run-sql.ts db/seed.sql",
+    "db:reset": "tsx --env-file=.env.local scripts/run-sql.ts db/reset.sql db/schema.sql db/seed.sql"
   },
   "dependencies": {
     "postgres": "^3.4.4",
@@ -17,6 +20,7 @@
     "@vercel/node": "^3.2.29",
     "@vitejs/plugin-vue": "^5.2.1",
     "@vue/tsconfig": "^0.7.0",
+    "tsx": "^4.19.2",
     "typescript": "~5.6.3",
     "vite": "^6.0.5",
     "vue-tsc": "^2.1.10"

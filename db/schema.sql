@@ -9,14 +9,17 @@ CREATE TABLE IF NOT EXISTS drinks (
   category   TEXT
 );
 
+-- quantity/unit are NULL for ingredients that aren't measured (e.g. milk
+-- poured "to the line", ice "to the top"). They're kept for ingredients
+-- that have a real measurement (shots, pumps).
 CREATE TABLE IF NOT EXISTS drink_recipes (
   id          SERIAL PRIMARY KEY,
   drink_id    INT NOT NULL REFERENCES drinks(id) ON DELETE CASCADE,
   size        TEXT NOT NULL CHECK (size IN ('short','tall','grande','venti','trenta')),
   iced        BOOLEAN NOT NULL,
   ingredient  TEXT NOT NULL,
-  quantity    NUMERIC NOT NULL,
-  unit        TEXT NOT NULL,
+  quantity    NUMERIC,
+  unit        TEXT,
   UNIQUE (drink_id, size, iced, ingredient)
 );
 
@@ -43,6 +46,17 @@ CREATE TABLE IF NOT EXISTS drink_steps (
 );
 
 CREATE INDEX IF NOT EXISTS idx_drink_steps_drink ON drink_steps(drink_id, iced, step_number);
+
+-- Available milks. `is_default` flags which one is pre-selected in the POS
+-- for drinks whose default is this milk. Multiple milks can have
+-- is_default=true since different drink categories default to different
+-- milks (latte/mocha default to 2%, but e.g. breve defaults to half & half).
+-- The drink-specific default is enforced in the POS layer, not here.
+CREATE TABLE IF NOT EXISTS milks (
+  id          SERIAL PRIMARY KEY,
+  name        TEXT NOT NULL UNIQUE,
+  is_default  BOOLEAN NOT NULL DEFAULT FALSE
+);
 
 CREATE TABLE IF NOT EXISTS modifiers (
   id    SERIAL PRIMARY KEY,

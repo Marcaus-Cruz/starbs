@@ -6,9 +6,10 @@ type RecipeRow = {
   size: string;
   iced: boolean;
   ingredient: string;
-  quantity: string;
-  unit: string;
+  quantity: string | null;
+  unit: string | null;
 };
+type MilkRow = { id: number; name: string };
 type StepRow = {
   step_number: string;
   template: string;
@@ -44,6 +45,8 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
   const size = String(req.query.size ?? 'grande');
   const iced = parseBool(req.query.iced);
   const modifierIds = parseModifierIds(req.query.modifiers);
+  const milkIdRaw = req.query.milk;
+  const milkId = milkIdRaw ? Number(Array.isArray(milkIdRaw) ? milkIdRaw[0] : milkIdRaw) : null;
 
   try {
     const drinkRows = await sql<DrinkRow[]>`
@@ -52,7 +55,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
     const drink = drinkRows[0];
     if (!drink) return res.status(404).json({ error: 'Drink not found' });
 
-    const [recipeRows, stepRows, modifierRows] = await Promise.all([
+    const [recipeRows, stepRows, modifierRows, milkRows] = await Promise.all([
       sql<RecipeRow[]>`
         SELECT size, iced, ingredient, quantity, unit
         FROM drink_recipes
@@ -72,6 +75,9 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
             WHERE m.id IN ${sql(modifierIds)} AND mr.size = ${size}
           `
         : Promise.resolve([] as ModifierRow[]),
+      milkId !== null
+        ? sql<MilkRow[]>`SELECT id, name FROM milks WHERE id = ${milkId}`
+        : Promise.resolve([] as MilkRow[]),
     ]);
 
     if (recipeRows.length === 0) {
@@ -80,10 +86,19 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
       });
     }
 
-    const ingredients: Record<string, { quantity: number; unit: string }> = {};
+    const ingredients: Record<string, { quantity: number | null; unit: string | null }> = {};
     for (const r of recipeRows) {
-      ingredients[r.ingredient] = { quantity: Number(r.quantity), unit: r.unit };
+      ingredients[r.ingredient] = {
+        quantity: r.quantity === null ? null : Number(r.quantity),
+        unit: r.unit,
+      };
     }
+
+    const needsMilk = 'milk' in ingredients;
+    if (needsMilk && milkRows.length === 0) {
+      return res.status(400).json({ error: 'Milk selection required for this drink' });
+    }
+    const milkName = milkRows[0]?.name.toLowerCase() ?? 'milk';
 
     const hasModifier = modifierRows.length > 0;
     const firstModifier = modifierRows[0];
@@ -97,6 +112,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
       pumps: String(totalPumps),
       size,
       flavor: flavorName,
+      milk: milkName,
     };
 
     const steps = stepRows
@@ -117,6 +133,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
       size,
       iced,
       ingredients,
+      milk: milkRows[0] ?? null,
       modifiers: modifierRows.map((m) => ({
         id: m.id,
         name: m.name,

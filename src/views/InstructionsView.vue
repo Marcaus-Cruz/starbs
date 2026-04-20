@@ -17,6 +17,7 @@ onMounted(async () => {
     iced: (route.query.iced as string) ?? 'false',
   });
   if (route.query.modifiers) params.set('modifiers', route.query.modifiers as string);
+  if (route.query.milk) params.set('milk', route.query.milk as string);
 
   try {
     const res = await fetch(`/api/drinks/${id}?${params}`);
@@ -42,7 +43,9 @@ onMounted(async () => {
 
     <template v-else-if="order">
       <h1>{{ order.name }}</h1>
-      <p class="meta">{{ order.size }}{{ order.iced ? ' · iced' : '' }}</p>
+      <p class="meta">
+        {{ order.size }}{{ order.iced ? ' · iced' : '' }}{{ order.milk ? ` · ${order.milk.name.toLowerCase()} milk` : '' }}
+      </p>
 
       <section v-if="order.modifiers.length">
         <h2>Modifiers</h2>
@@ -57,7 +60,12 @@ onMounted(async () => {
         <h2>Ingredients</h2>
         <ul>
           <li v-for="(info, name) in order.ingredients" :key="name">
-            {{ name }}: {{ info.quantity }} {{ info.unit }}
+            <template v-if="info.quantity !== null">
+              {{ name }}: {{ info.quantity }} {{ info.unit }}
+            </template>
+            <template v-else>
+              {{ name }}
+            </template>
           </li>
         </ul>
       </section>
