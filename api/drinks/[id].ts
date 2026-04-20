@@ -45,8 +45,8 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
   const size = String(req.query.size ?? 'grande');
   const iced = parseBool(req.query.iced);
   const modifierIds = parseModifierIds(req.query.modifiers);
-  const milkIdRaw = req.query.milk;
-  const milkId = milkIdRaw ? Number(Array.isArray(milkIdRaw) ? milkIdRaw[0] : milkIdRaw) : null;
+  const milkRaw = req.query.milk;
+  const milkName = milkRaw ? String(Array.isArray(milkRaw) ? milkRaw[0] : milkRaw) : null;
 
   try {
     const drinkRows = await sql<DrinkRow[]>`
@@ -75,8 +75,8 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
             WHERE m.id IN ${sql(modifierIds)} AND mr.size = ${size}
           `
         : Promise.resolve([] as ModifierRow[]),
-      milkId !== null
-        ? sql<MilkRow[]>`SELECT id, name FROM milks WHERE id = ${milkId}`
+      milkName !== null
+        ? sql<MilkRow[]>`SELECT id, name FROM milks WHERE name = ${milkName}`
         : Promise.resolve([] as MilkRow[]),
     ]);
 
@@ -95,10 +95,15 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
     }
 
     const needsMilk = 'milk' in ingredients;
-    if (needsMilk && milkRows.length === 0) {
-      return res.status(400).json({ error: 'Milk selection required for this drink' });
+    if (needsMilk) {
+      if (milkName === null) {
+        return res.status(400).json({ error: 'Milk selection required for this drink' });
+      }
+      if (milkRows.length === 0) {
+        return res.status(400).json({ error: `Unknown milk: ${milkName}` });
+      }
     }
-    const milkName = milkRows[0]?.name.toLowerCase() ?? 'milk';
+    const resolvedMilkName = milkRows[0]?.name.toLowerCase() ?? 'milk';
 
     const hasModifier = modifierRows.length > 0;
     const firstModifier = modifierRows[0];
@@ -112,7 +117,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
       pumps: String(totalPumps),
       size,
       flavor: flavorName,
-      milk: milkName,
+      milk: resolvedMilkName,
     };
 
     const steps = stepRows

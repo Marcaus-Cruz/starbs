@@ -1,34 +1,33 @@
 <script setup lang="ts">
-import { ref, onMounted } from 'vue';
+import { ref } from 'vue';
 import { useRouter } from 'vue-router';
-import type { Size, Milk } from '../types';
+import type { Size } from '../types';
 
 const router = useRouter();
 
 const drinks = ref([{ id: 1, name: 'Latte' }]);
 const modifiers = ref([{ id: 1, name: 'Vanilla Syrup' }]);
-const milks = ref<Milk[]>([]);
+
+const sizes: Size[] = ['short', 'tall', 'grande', 'venti', 'trenta'];
+const milks = [
+  '2%',
+  'Whole',
+  'Nonfat',
+  'Oat',
+  'Almond',
+  'Soy',
+  'Coconut',
+  'Half & Half',
+  'Heavy Cream',
+  'Protein',
+] as const;
+type Milk = (typeof milks)[number];
 
 const selectedDrinkId = ref<number | null>(null);
 const selectedSize = ref<Size>('grande');
 const iced = ref(false);
 const selectedModifierIds = ref<number[]>([]);
-const selectedMilkId = ref<number | null>(null);
-
-const sizes: Size[] = ['short', 'tall', 'grande', 'venti', 'trenta'];
-
-onMounted(async () => {
-  try {
-    const res = await fetch('/api/milks');
-    if (!res.ok) return;
-    const list: Milk[] = await res.json();
-    milks.value = list;
-    const def = list.find((m) => m.isDefault);
-    if (def) selectedMilkId.value = def.id;
-  } catch {
-    // Non-fatal: POS still usable, user just has to pick a milk manually if needed.
-  }
-});
+const selectedMilk = ref<Milk>('2%');
 
 function toggleModifier(id: number) {
   const i = selectedModifierIds.value.indexOf(id);
@@ -38,16 +37,15 @@ function toggleModifier(id: number) {
 
 function placeOrder() {
   if (selectedDrinkId.value === null) return;
-  const query: Record<string, string> = {
-    size: selectedSize.value,
-    iced: String(iced.value),
-    modifiers: selectedModifierIds.value.join(','),
-  };
-  if (selectedMilkId.value !== null) query.milk = String(selectedMilkId.value);
   router.push({
     name: 'instructions',
     params: { drinkId: String(selectedDrinkId.value) },
-    query,
+    query: {
+      size: selectedSize.value,
+      iced: String(iced.value),
+      modifiers: selectedModifierIds.value.join(','),
+      milk: selectedMilk.value,
+    },
   });
 }
 </script>
@@ -87,15 +85,15 @@ function placeOrder() {
       </label>
     </section>
 
-    <section v-if="milks.length">
+    <section>
       <h2>Milk</h2>
       <button
-        v-for="m in milks"
-        :key="m.id"
-        :class="{ active: selectedMilkId === m.id }"
-        @click="selectedMilkId = m.id"
+        v-for="milk in milks"
+        :key="milk"
+        :class="{ active: selectedMilk === milk }"
+        @click="selectedMilk = milk"
       >
-        {{ m.name }}
+        {{ milk }}
       </button>
     </section>
 

@@ -2,12 +2,6 @@ export type Size = 'short' | 'tall' | 'grande' | 'venti' | 'trenta';
 
 export type IngredientMap = Record<string, { quantity: number | null; unit: string | null }>;
 
-export interface Milk {
-  id: number;
-  name: string;
-  isDefault: boolean;
-}
-
 export interface ResolvedOrder {
   id: number;
   name: string;
@@ -25,6 +19,6 @@ export interface OrderSelection {
   drinkName: string;
   size: Size;
   iced: boolean;
-  milkId: number | null;
+  milk: string | null;
   modifierIds: number[];
 }
