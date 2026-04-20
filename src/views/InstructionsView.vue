@@ -48,10 +48,10 @@ onMounted(async () => {
       </p>
 
       <section v-if="order.modifiers.length">
-        <h2>Modifiers</h2>
+        <h2>Syrups</h2>
         <ul>
-          <li v-for="m in order.modifiers" :key="m.id">
-            {{ m.name }} — {{ m.quantity }} {{ m.unit }}
+          <li v-for="mod in order.modifiers" :key="mod.id">
+            {{ mod.name }} — {{ mod.quantity }} {{ mod.unit }}
           </li>
         </ul>
       </section>
