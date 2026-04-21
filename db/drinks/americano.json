@@ -1,0 +1,34 @@
+{
+  "name": "Americano",
+  "category": "espresso",
+  "hot": {
+    "recipes": {
+      "short":  { "espresso": 1 },
+      "tall":   { "espresso": 2 },
+      "grande": { "espresso": 3 },
+      "venti":  { "espresso": 4 }
+    },
+    "steps": [
+      { "n": 1.0, "text": "Pull {shots} shots of espresso into the cup" },
+      { "n": 1.5, "text": "Add {pumps} pumps of {flavor} to the cup", "when": "has_modifier" },
+      { "n": 2.0, "text": "Fill the cup with hot water to the top, leaving space for crema" },
+      { "n": 3.0, "text": "Cap, sleeve, and serve" }
+    ]
+  },
+  "iced": {
+    "usesIce": true,
+    "recipes": {
+      "tall":   { "espresso": 2 },
+      "grande": { "espresso": 3 },
+      "venti":  { "espresso": 4 }
+    },
+    "steps": [
+      { "n": 1.0, "text": "Pull {shots} shots of espresso" },
+      { "n": 1.5, "text": "Add {pumps} pumps of {flavor} to the cup", "when": "has_modifier" },
+      { "n": 2.0, "text": "Top the cup with ice" },
+      { "n": 3.0, "text": "Pour shots over the ice" },
+      { "n": 4.0, "text": "Fill with cold water to the top" },
+      { "n": 5.0, "text": "Cap and serve" }
+    ]
+  }
+}
