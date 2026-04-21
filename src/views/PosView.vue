@@ -2,7 +2,15 @@
 import { ref } from "vue";
 import { useRouter } from "vue-router";
 import type { Size } from "../types";
-import { drinks, sizes, milks, modifiers, type Drink, type Milk, type Modifier } from "../catalog";
+import {
+  drinks,
+  sizes,
+  milks,
+  modifiers,
+  type Drink,
+  type Milk,
+  type Modifier,
+} from "../catalog";
 
 const router = useRouter();
 
@@ -62,7 +70,7 @@ function placeOrder() {
     </section>
 
     <section>
-      <label>
+      <label :class="{ 'iced-active': iced }">
         <input type="checkbox" v-model="iced" />
         Iced
       </label>
@@ -109,7 +117,10 @@ function placeOrder() {
   padding: 2em;
   margin: 0 auto;
 }
+
 section {
+  display: flex;
+  flex-wrap: wrap;
   margin: 0.5em 0;
 }
 
@@ -120,6 +131,7 @@ h1 {
 h2 {
   margin: auto;
   font-size: 1em;
+  flex-basis: 100%;
 }
 
 button {
@@ -127,17 +139,27 @@ button {
   margin: 0.25em;
   padding: 0.5em 1em;
   cursor: pointer;
+  flex: 0 0 10vw;
+  min-height: 4em;
 }
+
 button.active {
   background: #006241;
   color: white;
 }
+
+label.iced-active {
+  color: #006241;
+  font-weight: 600;
+}
+
 button.primary {
   background: #006241;
   color: white;
   padding: 0.75em 1.5em;
   font-size: 1em;
 }
+
 button.primary:disabled {
   opacity: 0.4;
   cursor: not-allowed;
