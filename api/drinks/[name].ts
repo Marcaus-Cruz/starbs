@@ -31,7 +31,7 @@ function parseModifierNames(v: unknown): string[] {
   const raw = Array.isArray(v) ? v[0] : String(v);
   return raw
     .split(',')
-    .map((s) => s.trim())
+    .map((s) => s.replace(/\+/g, ' ').trim())
     .filter((s) => s.length > 0);
 }
 
@@ -42,7 +42,10 @@ function placeholderFor(ingredient: string): string {
 
 export default async function handler(req: VercelRequest, res: VercelResponse) {
   const nameParam = req.query.name;
-  const drinkName = String(Array.isArray(nameParam) ? nameParam[0] : nameParam ?? '');
+  const drinkName = String(Array.isArray(nameParam) ? nameParam[0] : nameParam ?? '').replace(
+    /\+/g,
+    ' '
+  );
   if (!drinkName) {
     return res.status(400).json({ error: 'Missing drink name' });
   }
@@ -51,7 +54,9 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
   const iced = parseBool(req.query.iced);
   const modifierNames = parseModifierNames(req.query.modifiers);
   const milkRaw = req.query.milk;
-  const milkName = milkRaw ? String(Array.isArray(milkRaw) ? milkRaw[0] : milkRaw) : null;
+  const milkName = milkRaw
+    ? String(Array.isArray(milkRaw) ? milkRaw[0] : milkRaw).replace(/\+/g, ' ')
+    : null;
 
   try {
     const drinkRows = await sql<DrinkRow[]>`

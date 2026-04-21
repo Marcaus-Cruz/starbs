@@ -1,7 +1,7 @@
 <script setup lang="ts">
-import { ref, onMounted } from 'vue';
-import { useRoute, useRouter } from 'vue-router';
-import type { ResolvedOrder } from '../types';
+import { ref, onMounted } from "vue";
+import { useRoute, useRouter } from "vue-router";
+import type { ResolvedOrder } from "../types";
 
 const route = useRoute();
 const router = useRouter();
@@ -13,21 +13,25 @@ const loading = ref(true);
 onMounted(async () => {
   const name = route.params.drinkName as string;
   const params = new URLSearchParams({
-    size: (route.query.size as string) ?? 'grande',
-    iced: (route.query.iced as string) ?? 'false',
+    size: (route.query.size as string) ?? "grande",
+    iced: (route.query.iced as string) ?? "false",
   });
-  if (route.query.modifiers) params.set('modifiers', route.query.modifiers as string);
-  if (route.query.milk) params.set('milk', route.query.milk as string);
+  if (route.query.modifiers)
+    params.set("modifiers", route.query.modifiers as string);
+  if (route.query.milk) params.set("milk", route.query.milk as string);
 
   try {
-    const res = await fetch(`/api/drinks/${encodeURIComponent(name)}?${params}`);
+    const res = await fetch(
+      `/api/drinks/${encodeURIComponent(name)}?${params}`,
+    );
     if (!res.ok) {
       const body = await res.json().catch(() => ({}));
       throw new Error(body.error ?? `HTTP ${res.status}`);
     }
     order.value = await res.json();
+    console.log({ order: order.value });
   } catch (e) {
-    error.value = e instanceof Error ? e.message : 'Failed to load drink';
+    error.value = e instanceof Error ? e.message : "Failed to load drink";
   } finally {
     loading.value = false;
   }
@@ -44,7 +48,8 @@ onMounted(async () => {
     <template v-else-if="order">
       <h1>{{ order.name }}</h1>
       <p class="meta">
-        {{ order.size }}{{ order.iced ? ' · iced' : '' }}{{ order.milk ? ` · ${order.milk.name.toLowerCase()} milk` : '' }}
+        {{ order.size }}{{ order.iced ? " · iced" : ""
+        }}{{ order.milk ? ` · ${order.milk.name.toLowerCase()} milk` : "" }}
       </p>
 
       <section v-if="order.modifiers.length">
@@ -73,7 +78,9 @@ onMounted(async () => {
       <section>
         <h2>Steps</h2>
         <ol>
-          <li v-for="s in order.steps" :key="s.stepNumber">{{ s.text }}</li>
+          <li v-for="step in order.steps" :key="step.stepNumber">
+            {{ step.text }}
+          </li>
         </ol>
       </section>
     </template>
