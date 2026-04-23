@@ -9,13 +9,13 @@ export const milks = [
   '2%',
   'Whole',
   'Nonfat',
-  'Oat',
+  'Oatmilk',
   'Almond',
-  'Soy',
+  'Soymilk',
   'Coconut',
   'Half & Half',
   'Heavy Cream',
-  'Protein',
+  'Protein Milk',
 ] as const;
 export type Milk = (typeof milks)[number];
 

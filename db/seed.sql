@@ -8,13 +8,13 @@ INSERT INTO milks (name, is_default) VALUES
   ('2%',          TRUE),
   ('Whole',       FALSE),
   ('Nonfat',      FALSE),
-  ('Oat',         FALSE),
+  ('Oatmilk',         FALSE),
   ('Almond',      FALSE),
-  ('Soy',         FALSE),
+  ('Soymilk',         FALSE),
   ('Coconut',     FALSE),
   ('Half & Half', FALSE),
   ('Heavy Cream', FALSE),
-  ('Protein',     FALSE)
+  ('Protein milk',     FALSE)
 ON CONFLICT (name) DO NOTHING;
 
 -- Modifiers. Standard syrups/sauces share the same per-size pump counts:
