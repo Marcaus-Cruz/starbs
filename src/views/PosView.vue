@@ -62,6 +62,9 @@ function placeOrder() {
 <template>
   <main class="pos">
     <h1>STARBS POS</h1>
+    <button class="learn-link" @click="router.push('/learn')">
+      Help me learn →
+    </button>
 
     <section>
       <h2>Drink</h2>
@@ -181,5 +184,12 @@ button.primary {
 button.primary:disabled {
   opacity: 0.4;
   cursor: not-allowed;
+}
+
+button.learn-link {
+  display: block;
+  margin: 0.5em auto;
+  font-size: 0.6em;
+  background: #f3f3f3;
 }
 </style>
