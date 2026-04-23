@@ -1,0 +1,46 @@
+{
+  "name": "Caramel Macchiato",
+  "category": "espresso",
+
+  "hot": {
+    "usesMilk": true,
+    "recipes": {
+      "short":  { "espresso": 1, "vanilla syrup": 1, "caramel drizzle": null },
+      "tall":   { "espresso": 1, "vanilla syrup": 2, "caramel drizzle": null },
+      "grande": { "espresso": 2, "vanilla syrup": 3, "caramel drizzle": null },
+      "venti":  { "espresso": 2, "vanilla syrup": 4, "caramel drizzle": null }
+    },
+    "steps": [
+      { "n": 1.0, "text": "Pull {shots} shots of espresso" },
+      { "n": 2.0, "text": "Add {vanilla_syrup} pumps of vanilla to the cup" },
+      { "n": 2.5, "text": "Add {pumps} pumps of {flavor} to the cup", "when": "has_modifier" },
+      { "n": 3.0, "text": "Pour {milk} to the {size} line of the steaming pitcher" },
+      { "n": 4.0, "text": "Steam the {milk}" },
+      { "n": 5.0, "text": "Pour steamed {milk} into cup" },
+      { "n": 6.0, "text": "Pour espresso into cup" },
+      { "n": 7.0, "text": "Purge and wipe the steam wand" },
+      { "n": 8.0, "text": "Crosshatch caramel drizzle" },
+      { "n": 9.0, "text": "Cap, sleeve, and serve" }
+    ]
+  },
+
+  "iced": {
+    "usesMilk": true,
+    "usesIce": true,
+    "recipes": {
+      "tall":   { "espresso": 1, "vanilla syrup": 2, "caramel drizzle": null },
+      "grande": { "espresso": 2, "vanilla syrup": 3, "caramel drizzle": null },
+      "venti":  { "espresso": 3, "vanilla syrup": 4, "caramel drizzle": null }
+    },
+    "steps": [
+      { "n": 1.0, "text": "Pull {shots} shots of espresso" },
+      { "n": 2.0, "text": "Add {vanilla_syrup} pumps of vanilla to the cup" },
+      { "n": 2.5, "text": "Add {pumps} pumps of {flavor} to the cup", "when": "has_modifier" },
+      { "n": 3.0, "text": "Pour {milk} to the top line of the cup" },
+      { "n": 4.0, "text": "Top the cup with ice" },
+      { "n": 5.0, "text": "Pour espresso over the ice" },
+      { "n": 6.0, "text": "Crosshatch caramel drizzle" },
+      { "n": 7.0, "text": "Cap and serve" }
+    ]
+  }
+}

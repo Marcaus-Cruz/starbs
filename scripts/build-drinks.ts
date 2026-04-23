@@ -15,7 +15,7 @@ interface Step {
 interface Variant {
   usesMilk?: boolean;
   usesIce?: boolean;
-  recipes: Partial<Record<Size, Record<string, number>>>;
+  recipes: Partial<Record<Size, Record<string, number | null>>>;
   steps: Step[];
 }
 
@@ -140,9 +140,9 @@ function generateDrinkSQL(drink: Drink): string {
     const rows: string[] = [];
     for (const [size, recipe] of Object.entries(variant.recipes)) {
       for (const [ingredient, quantity] of Object.entries(recipe ?? {})) {
-        rows.push(
-          `  (${sqlString(size)}, ${sqlString(ingredient)}, ${quantity}, ${sqlString(unitFor(ingredient))})`
-        );
+        const qty = quantity === null ? 'NULL' : String(quantity);
+        const unit = quantity === null ? 'NULL' : sqlString(unitFor(ingredient));
+        rows.push(`  (${sqlString(size)}, ${sqlString(ingredient)}, ${qty}, ${unit})`);
       }
       if (variant.usesMilk) {
         rows.push(`  (${sqlString(size)}, 'milk', NULL, NULL)`);
