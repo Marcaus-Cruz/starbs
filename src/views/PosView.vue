@@ -21,8 +21,8 @@ const iced = ref(false);
 const selectedModifiers = ref<Modifier[]>([]);
 const selectedMilk = ref<Milk>("2%");
 
-const currentEntry = computed(() =>
-  drinkCatalog.find((d) => d.name === selectedDrink.value) ?? null
+const currentEntry = computed(
+  () => drinkCatalog.find((d) => d.name === selectedDrink.value) ?? null,
 );
 const icedLocked = computed(() => {
   const e = currentEntry.value;
@@ -61,11 +61,13 @@ function placeOrder() {
 
 <template>
   <main class="pos">
-    <h1>STARBS POS</h1>
-    <button class="learn-link" @click="router.push('/learn')">
-      Help me learn →
-    </button>
-
+    <section class="header">
+      <h1>STARBS POS</h1>
+      <button class="learn-link" @click="router.push('/learn')">
+        LEARN →
+      </button>
+    </section>
+    
     <section>
       <h2>Drink</h2>
       <button
@@ -132,6 +134,13 @@ function placeOrder() {
 </template>
 
 <style scoped>
+.header {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+}
+
 .pos {
   max-width: 80vw;
   font-size: 3vmin;
@@ -145,9 +154,7 @@ section {
   margin: 0.5em 0;
 }
 
-h1 {
-  margin: auto;
-}
+h1 {}
 
 h2 {
   margin: auto;
@@ -184,12 +191,5 @@ button.primary {
 button.primary:disabled {
   opacity: 0.4;
   cursor: not-allowed;
-}
-
-button.learn-link {
-  display: block;
-  margin: 0.5em auto;
-  font-size: 0.6em;
-  background: #f3f3f3;
 }
 </style>

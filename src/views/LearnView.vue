@@ -1,16 +1,26 @@
 <script setup lang="ts">
-import { ref, computed, onMounted, watch } from "vue";
+import { ref, computed, watch } from "vue";
 import { useRouter } from "vue-router";
 import { drinkCatalog } from "../catalog.generated";
+import { milks as milkCatalog } from "../catalog";
 
 type Kind = "syrup" | "milk";
 
 const router = useRouter();
 
-const syrups = ref<string[]>([]);
-const milks = ref<string[]>([]);
-const loadingIngredients = ref(true);
-const ingredientsError = ref<string | null>(null);
+// Derive picker lists from the catalog (instant, no API call).
+const syrups = computed(() => {
+  const set = new Set<string>();
+  for (const d of drinkCatalog) {
+    for (const ing of d.recipeIngredients) {
+      const lower = ing.toLowerCase();
+      if (lower.includes("syrup") || lower.includes("sauce")) set.add(ing);
+    }
+  }
+  return [...set].sort();
+});
+
+const milks = computed(() => [...milkCatalog]);
 
 const selectedKind = ref<Kind | null>(null);
 const selectedValue = ref<string | null>(null);
@@ -19,20 +29,6 @@ const drinks = ref<string[]>([]);
 const loadingDrinks = ref(false);
 const drinksError = ref<string | null>(null);
 
-onMounted(async () => {
-  try {
-    const res = await fetch("/api/learn/ingredients");
-    if (!res.ok) throw new Error(`HTTP ${res.status}`);
-    const body = await res.json();
-    syrups.value = body.syrups;
-    milks.value = body.milks;
-  } catch (e) {
-    ingredientsError.value = e instanceof Error ? e.message : "Failed to load";
-  } finally {
-    loadingIngredients.value = false;
-  }
-});
-
 function pick(kind: Kind, value: string) {
   selectedKind.value = kind;
   selectedValue.value = value;
@@ -40,12 +36,11 @@ function pick(kind: Kind, value: string) {
 
 watch([selectedKind, selectedValue], async ([kind, value]) => {
   if (!kind || !value) return;
-  loadingDrinks.value = true;
-  drinksError.value = null;
   drinks.value = [];
+  drinksError.value = null;
+  loadingDrinks.value = true;
   try {
     if (kind === "milk") {
-      // Filter the catalog client-side: drinks whose defaultMilk matches.
       drinks.value = drinkCatalog
         .filter((d) => d.defaultMilk === value)
         .map((d) => d.name);
@@ -92,52 +87,47 @@ const heading = computed(() => {
 
     <div class="layout">
       <aside class="picker">
-        <p v-if="loadingIngredients">Loading…</p>
-        <p v-else-if="ingredientsError" class="error">
-          {{ ingredientsError }}
-        </p>
-        <template v-else>
-          <section>
-            <h2>Syrups & sauces</h2>
-            <button
-              v-for="s in syrups"
-              :key="s"
-              :class="{
-                active: selectedKind === 'syrup' && selectedValue === s,
-              }"
-              @click="pick('syrup', s)"
-            >
-              {{ s }}
-            </button>
-          </section>
-          <section>
-            <h2>Milks</h2>
-            <button
-              v-for="m in milks"
-              :key="m"
-              :class="{
-                active: selectedKind === 'milk' && selectedValue === m,
-              }"
-              @click="pick('milk', m)"
-            >
-              {{ m }}
-            </button>
-          </section>
-        </template>
+        <section>
+          <h2>Syrups & sauces</h2>
+          <button
+            v-for="s in syrups"
+            :key="s"
+            :class="{ active: selectedKind === 'syrup' && selectedValue === s }"
+            @click="pick('syrup', s)"
+          >
+            {{ s }}
+          </button>
+        </section>
+        <section>
+          <h2>Milks</h2>
+          <button
+            v-for="m in milks"
+            :key="m"
+            :class="{ active: selectedKind === 'milk' && selectedValue === m }"
+            @click="pick('milk', m)"
+          >
+            {{ m }}
+          </button>
+        </section>
       </aside>
 
       <section class="results">
         <h2>{{ heading }}</h2>
-        <p v-if="loadingDrinks">Loading…</p>
-        <p v-else-if="drinksError" class="error">{{ drinksError }}</p>
-        <p v-else-if="selectedKind && drinks.length === 0">
-          No drinks match.
-        </p>
-        <ul v-else>
+        <p v-if="drinksError" class="error">{{ drinksError }}</p>
+
+        <ul v-if="drinks.length">
           <li v-for="d in drinks" :key="d">
             <button class="drink" @click="openDrink(d)">{{ d }}</button>
           </li>
         </ul>
+
+        <div v-if="loadingDrinks" class="spinner" aria-label="Loading more">
+          <span class="dot"></span>
+          <span class="dot"></span>
+          <span class="dot"></span>
+        </div>
+
+        <p v-else-if="selectedKind && drinks.length === 0">No drinks match.</p>
       </section>
     </div>
   </main>
@@ -192,6 +182,7 @@ button.active {
 .results ul {
   list-style: none;
   padding: 0;
+  margin: 0;
 }
 
 .results li {
@@ -203,6 +194,39 @@ button.drink {
   width: 100%;
   text-align: left;
   padding: 0.75em 1em;
+}
+
+.spinner {
+  display: flex;
+  justify-content: center;
+  gap: 0.4em;
+  padding: 1em;
+}
+
+.spinner .dot {
+  width: 0.5em;
+  height: 0.5em;
+  border-radius: 50%;
+  background: #006241;
+  animation: bounce 1.2s infinite ease-in-out both;
+}
+
+.spinner .dot:nth-child(2) {
+  animation-delay: 0.15s;
+}
+.spinner .dot:nth-child(3) {
+  animation-delay: 0.3s;
+}
+
+@keyframes bounce {
+  0%, 80%, 100% {
+    transform: scale(0.4);
+    opacity: 0.4;
+  }
+  40% {
+    transform: scale(1);
+    opacity: 1;
+  }
 }
 
 .error {

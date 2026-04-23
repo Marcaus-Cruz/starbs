@@ -239,6 +239,17 @@ const catalogHeader =
   `// AUTO-GENERATED from db/drinks/*.json by scripts/build-drinks.ts\n` +
   `// Do not edit by hand. Regenerate with: npm run db:build\n\n`;
 
+function recipeIngredients(d: Drink): string[] {
+  const set = new Set<string>();
+  for (const variant of [d.hot, d.iced]) {
+    if (!variant) continue;
+    for (const recipe of Object.values(variant.recipes)) {
+      for (const ing of Object.keys(recipe ?? {})) set.add(ing);
+    }
+  }
+  return [...set].sort();
+}
+
 const catalogBody = catalogEntries
   .map((d) => {
     const hasHot = d.hot !== undefined;
@@ -249,6 +260,7 @@ const catalogBody = catalogEntries
     defaultIced: ${JSON.stringify(d.defaultIced ?? false)},
     hasHot: ${hasHot},
     hasIced: ${hasIced},
+    recipeIngredients: ${JSON.stringify(recipeIngredients(d))},
   }`;
   })
   .join(',\n');
@@ -261,6 +273,7 @@ const catalogTs =
   defaultIced: boolean;
   hasHot: boolean;
   hasIced: boolean;
+  recipeIngredients: readonly string[];
 }
 
 export const drinkCatalog: readonly DrinkCatalogEntry[] = [

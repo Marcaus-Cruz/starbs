@@ -7,6 +7,7 @@ export interface DrinkCatalogEntry {
   defaultIced: boolean;
   hasHot: boolean;
   hasIced: boolean;
+  recipeIngredients: readonly string[];
 }
 
 export const drinkCatalog: readonly DrinkCatalogEntry[] = [
@@ -16,6 +17,7 @@ export const drinkCatalog: readonly DrinkCatalogEntry[] = [
     defaultIced: false,
     hasHot: true,
     hasIced: true,
+    recipeIngredients: ["espresso"],
   },
   {
     name: "Brown Sugar Oatmilk Shaken Espresso",
@@ -23,6 +25,7 @@ export const drinkCatalog: readonly DrinkCatalogEntry[] = [
     defaultIced: true,
     hasHot: false,
     hasIced: true,
+    recipeIngredients: ["cinnamon powder","classic syrup","espresso"],
   },
   {
     name: "Caramel Macchiato",
@@ -30,6 +33,7 @@ export const drinkCatalog: readonly DrinkCatalogEntry[] = [
     defaultIced: false,
     hasHot: true,
     hasIced: true,
+    recipeIngredients: ["caramel drizzle","espresso","vanilla syrup"],
   },
   {
     name: "Chai Latte",
@@ -37,6 +41,7 @@ export const drinkCatalog: readonly DrinkCatalogEntry[] = [
     defaultIced: false,
     hasHot: true,
     hasIced: true,
+    recipeIngredients: ["chai syrup","classic syrup"],
   },
   {
     name: "Example Drink",
@@ -44,6 +49,7 @@ export const drinkCatalog: readonly DrinkCatalogEntry[] = [
     defaultIced: false,
     hasHot: true,
     hasIced: true,
+    recipeIngredients: ["espresso","mocha sauce"],
   },
   {
     name: "Honey Citrus Mint Tea",
@@ -51,6 +57,7 @@ export const drinkCatalog: readonly DrinkCatalogEntry[] = [
     defaultIced: false,
     hasHot: true,
     hasIced: false,
+    recipeIngredients: ["honey blend","mint majesty tea bag"],
   },
   {
     name: "Iced Shaken Espresso",
@@ -58,6 +65,7 @@ export const drinkCatalog: readonly DrinkCatalogEntry[] = [
     defaultIced: true,
     hasHot: false,
     hasIced: true,
+    recipeIngredients: ["classic syrup","espresso"],
   },
   {
     name: "Latte",
@@ -65,6 +73,7 @@ export const drinkCatalog: readonly DrinkCatalogEntry[] = [
     defaultIced: false,
     hasHot: true,
     hasIced: true,
+    recipeIngredients: ["espresso"],
   },
   {
     name: "Matcha Latte",
@@ -72,6 +81,7 @@ export const drinkCatalog: readonly DrinkCatalogEntry[] = [
     defaultIced: false,
     hasHot: true,
     hasIced: true,
+    recipeIngredients: ["matcha powder"],
   },
   {
     name: "Mocha",
@@ -79,5 +89,6 @@ export const drinkCatalog: readonly DrinkCatalogEntry[] = [
     defaultIced: false,
     hasHot: true,
     hasIced: true,
+    recipeIngredients: ["espresso","mocha sauce"],
   },
 ] as const;
