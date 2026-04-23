@@ -1,0 +1,42 @@
+{
+  "name": "Chai Latte",
+  "category": "tea",
+
+  "hot": {
+    "usesMilk": true,
+    "recipes": {
+      "short":  { "classic syrup": 2, "chai syrup": 2 },
+      "tall":   { "classic syrup": 3, "chai syrup": 3 },
+      "grande": { "classic syrup": 4, "chai syrup": 4 },
+      "venti":  { "classic syrup": 5, "chai syrup": 5 }
+    },
+    "steps": [
+      { "n": 1.0, "text": "Pour {milk} to the {size} line of the steaming pitcher" },
+      { "n": 2.0, "text": "Steam the {milk}" },
+      { "n": 3.0, "text": "Add {classic_syrup} pumps of classic to the cup" },
+      { "n": 4.0, "text": "Add {chai_syrup} pumps of chai to the cup" },
+      { "n": 4.5, "text": "Add {pumps} pumps of {flavor} to the cup", "when": "has_modifier" },
+      { "n": 5.0, "text": "Pour steamed {milk} into cup" },
+      { "n": 6.0, "text": "Purge and wipe the steam wand" },
+      { "n": 7.0, "text": "Cap, sleeve, and serve" }
+    ]
+  },
+
+  "iced": {
+    "usesMilk": true,
+    "usesIce": true,
+    "recipes": {
+      "tall":   { "classic syrup": 3, "chai syrup": 3 },
+      "grande": { "classic syrup": 4, "chai syrup": 4 },
+      "venti":  { "classic syrup": 6, "chai syrup": 6 }
+    },
+    "steps": [
+      { "n": 1.0, "text": "Add {classic_syrup} pumps of classic to the cup" },
+      { "n": 2.0, "text": "Add {chai_syrup} pumps of chai to the cup" },
+      { "n": 2.5, "text": "Add {pumps} pumps of {flavor} to the cup", "when": "has_modifier" },
+      { "n": 3.0, "text": "Top the cup with ice" },
+      { "n": 4.0, "text": "Pour {milk} over the ice to the top" },
+      { "n": 5.0, "text": "Cap and serve" }
+    ]
+  }
+}
