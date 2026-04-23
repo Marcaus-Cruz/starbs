@@ -1,6 +1,8 @@
 {
   "name": "Mocha",
   "category": "espresso",
+  "defaultMilk": "2%",
+  "defaultIced": false,
   "hot": {
     "usesMilk": true,
     "recipes": {

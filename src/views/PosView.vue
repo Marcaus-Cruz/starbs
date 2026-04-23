@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref } from "vue";
+import { ref, computed } from "vue";
 import { useRouter } from "vue-router";
 import type { Size } from "../types";
 import {
@@ -11,6 +11,7 @@ import {
   type Milk,
   type Modifier,
 } from "../catalog";
+import { drinkCatalog } from "../catalog.generated";
 
 const router = useRouter();
 
@@ -19,6 +20,23 @@ const selectedSize = ref<Size>("grande");
 const iced = ref(false);
 const selectedModifiers = ref<Modifier[]>([]);
 const selectedMilk = ref<Milk>("2%");
+
+const currentEntry = computed(() =>
+  drinkCatalog.find((d) => d.name === selectedDrink.value) ?? null
+);
+const icedLocked = computed(() => {
+  const e = currentEntry.value;
+  if (!e) return false;
+  return !(e.hasHot && e.hasIced);
+});
+
+function selectDrink(drink: Drink) {
+  selectedDrink.value = drink;
+  const entry = drinkCatalog.find((d) => d.name === drink);
+  if (!entry) return;
+  iced.value = entry.defaultIced;
+  if (entry.defaultMilk) selectedMilk.value = entry.defaultMilk as Milk;
+}
 
 function toggleModifier(name: Modifier) {
   const i = selectedModifiers.value.indexOf(name);
@@ -51,7 +69,7 @@ function placeOrder() {
         v-for="drink in drinks"
         :key="drink"
         :class="{ active: selectedDrink === drink }"
-        @click="selectedDrink = drink"
+        @click="selectDrink(drink)"
       >
         {{ drink }}
       </button>
@@ -70,8 +88,8 @@ function placeOrder() {
     </section>
 
     <section>
-      <label :class="{ 'iced-active': iced }">
-        <input type="checkbox" v-model="iced" />
+      <label :class="{ 'iced-active': iced, 'iced-locked': icedLocked }">
+        <input type="checkbox" v-model="iced" :disabled="icedLocked" />
         Iced
       </label>
     </section>

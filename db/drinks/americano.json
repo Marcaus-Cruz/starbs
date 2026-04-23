@@ -1,6 +1,8 @@
 {
   "name": "Americano",
   "category": "espresso",
+  "defaultMilk": null,
+  "defaultIced": false,
   "hot": {
     "recipes": {
       "short":  { "espresso": 1 },

@@ -1,6 +1,8 @@
 {
   "name": "Brown Sugar Oatmilk Shaken Espresso",
   "category": "espresso",
+  "defaultMilk": "Oatmilk",
+  "defaultIced": true,
   "iced": {
     "usesMilk": true,
     "usesIce": true,

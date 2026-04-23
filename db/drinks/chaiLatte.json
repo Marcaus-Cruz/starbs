@@ -1,6 +1,8 @@
 {
   "name": "Chai Latte",
   "category": "tea",
+  "defaultMilk": "2%",
+  "defaultIced": false,
 
   "hot": {
     "usesMilk": true,

@@ -22,6 +22,8 @@ interface Variant {
 interface Drink {
   name: string;
   category: string | null;
+  defaultMilk?: string | null;
+  defaultIced?: boolean;
   hot?: Variant;
   iced?: Variant;
 }
@@ -188,6 +190,7 @@ function generateDrinkSQL(drink: Drink): string {
 
 const drinksDir = resolve('db/drinks');
 const outPath = resolve('db/drinks.generated.sql');
+const catalogOutPath = resolve('src/catalog.generated.ts');
 
 const files = readdirSync(drinksDir).filter((f) => f.endsWith('.json')).sort();
 if (files.length === 0) {
@@ -197,12 +200,15 @@ if (files.length === 0) {
 
 let allErrors: string[] = [];
 const perFileSQL: string[] = [];
+const catalogEntries: Drink[] = [];
 
 for (const file of files) {
   const path = join(drinksDir, file);
+  const raw = readFileSync(path, 'utf8').trim();
+  if (raw === '') continue;
   let drink: Drink;
   try {
-    drink = JSON.parse(readFileSync(path, 'utf8')) as Drink;
+    drink = JSON.parse(raw) as Drink;
   } catch (e) {
     allErrors.push(`${basename(file)}: invalid JSON — ${e instanceof Error ? e.message : e}`);
     continue;
@@ -213,6 +219,7 @@ for (const file of files) {
     continue;
   }
   perFileSQL.push(generateDrinkSQL(drink));
+  catalogEntries.push(drink);
 }
 
 if (allErrors.length > 0) {
@@ -227,3 +234,39 @@ const header =
 
 writeFileSync(outPath, header + perFileSQL.join('\n'));
 console.log(`Wrote ${outPath} (${files.length} drink${files.length === 1 ? '' : 's'})`);
+
+const catalogHeader =
+  `// AUTO-GENERATED from db/drinks/*.json by scripts/build-drinks.ts\n` +
+  `// Do not edit by hand. Regenerate with: npm run db:build\n\n`;
+
+const catalogBody = catalogEntries
+  .map((d) => {
+    const hasHot = d.hot !== undefined;
+    const hasIced = d.iced !== undefined;
+    return `  {
+    name: ${JSON.stringify(d.name)},
+    defaultMilk: ${JSON.stringify(d.defaultMilk ?? null)},
+    defaultIced: ${JSON.stringify(d.defaultIced ?? false)},
+    hasHot: ${hasHot},
+    hasIced: ${hasIced},
+  }`;
+  })
+  .join(',\n');
+
+const catalogTs =
+  catalogHeader +
+  `export interface DrinkCatalogEntry {
+  name: string;
+  defaultMilk: string | null;
+  defaultIced: boolean;
+  hasHot: boolean;
+  hasIced: boolean;
+}
+
+export const drinkCatalog: readonly DrinkCatalogEntry[] = [
+${catalogBody},
+] as const;
+`;
+
+writeFileSync(catalogOutPath, catalogTs);
+console.log(`Wrote ${catalogOutPath}`);

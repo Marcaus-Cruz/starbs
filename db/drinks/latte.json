@@ -1,6 +1,8 @@
 {
   "name": "Latte",
   "category": "espresso",
+  "defaultMilk": "2%",
+  "defaultIced": false,
   "hot": {
     "usesMilk": true,
     "recipes": {
