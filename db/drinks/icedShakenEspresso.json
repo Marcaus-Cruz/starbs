@@ -1,0 +1,28 @@
+{
+  "name": "Iced Shaken Espresso",
+  "category": "espresso",
+  "defaultMilk": "2%",
+  "defaultIced": true,
+
+  "iced": {
+    "usesMilk": true,
+    "usesIce": true,
+    "recipes": {
+      "tall":   { "espresso": 2, "classic syrup": 2 },
+      "grande": { "espresso": 3, "classic syrup": 3 },
+      "venti":  { "espresso": 4, "classic syrup": 4 }
+    },
+    "steps": [
+      { "n": 1.0, "text": "Pull {shots} shots of espresso" },
+      { "n": 2.0, "text": "Add {classic_syrup} pumps of classic syrup to the shaker" },
+      { "n": 2.5, "text": "Add {pumps} pumps of {flavor} to the shaker", "when": "has_modifier" },
+      { "n": 3.0, "text": "Fill the cup with ice up to the line" },
+      { "n": 4.0, "text": "Pour shots into shaker" },
+      { "n": 5.0, "text": "Add ice to the shaker" },
+      { "n": 6.0, "text": "Shake the shaker 10 times" },
+      { "n": 7.0, "text": "Pour into cup" },
+      { "n": 8.0, "text": "Top off cup with a splash of {milk}" },
+      { "n": 9.0, "text": "Cap and serve" }
+    ]
+  }
+}

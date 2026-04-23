@@ -1,0 +1,25 @@
+{
+  "name": "Honey Citrus Mint Tea",
+  "category": "tea",
+  "defaultMilk": null,
+  "defaultIced": false,
+
+  "hot": {
+    "recipes": {
+      "short":  { "mint majesty tea bag": 1, "honey blend": 1 },
+      "tall":   { "mint majesty tea bag": 1, "honey blend": 2 },
+      "grande": { "mint majesty tea bag": 2, "honey blend": 3 },
+      "venti":  { "mint majesty tea bag": 2, "honey blend": 4 }
+    },
+    "steps": [
+      { "n": 1.0, "text": "Place {mint_majesty_tea_bag} Mint Majesty tea bag(s) into the cup" },
+      { "n": 2.0, "text": "Add {honey_blend} pumps of honey blend to the cup" },
+      { "n": 2.5, "text": "Add {pumps} pumps of {flavor} to the cup", "when": "has_modifier" },
+      { "n": 3.0, "text": "Fill the cup halfway with hot water" },
+      { "n": 4.0, "text": "Steam lemonade" },
+      { "n": 5.0, "text": "Fill the rest of the cup with steamed lemonade" },
+      { "n": 6.0, "text": "Purge and wipe the steam wand" },
+      { "n": 7.0, "text": "Cap, sleeve, and serve" }
+    ]
+  }
+}

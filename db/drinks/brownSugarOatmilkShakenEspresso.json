@@ -17,10 +17,11 @@
       { "n": 3.0, "text": "Add {cinnamon_powder} shakes of cinnamon powder to the shaker" },
       { "n": 4.0, "text": "Fill the cup with ice up to the line" },
       { "n": 5.0, "text": "Pour shots into shaker" },
-      { "n": 6.0, "text": "Shake the shaker 10 times" },
-      { "n": 7.0, "text": "Pour into cup" },
-      { "n": 8.0, "text": "Top off cup with {milk}" },
-      { "n": 9.0, "text": "Cap and serve" }
+      { "n": 6.0, "text": "Add ice to the shaker" },
+      { "n": 7.0, "text": "Shake the shaker 10 times" },
+      { "n": 8.0, "text": "Pour into cup" },
+      { "n": 9.0, "text": "Top off cup with {milk}" },
+      { "n": 10.0, "text": "Cap and serve" }
     ]
   }
 }

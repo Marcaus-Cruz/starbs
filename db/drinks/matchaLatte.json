@@ -1,0 +1,47 @@
+{
+  "name": "Matcha Latte",
+  "category": "tea",
+  "defaultMilk": "2%",
+  "defaultIced": false,
+
+  "hot": {
+    "usesMilk": true,
+    "recipes": {
+      "short":  { "matcha powder": 2 },
+      "tall":   { "matcha powder": 3 },
+      "grande": { "matcha powder": 4 },
+      "venti":  { "matcha powder": 5 }
+    },
+    "steps": [
+      { "n": 1.0, "text": "Pour {milk} to the {size} line of the steaming pitcher" },
+      { "n": 2.0, "text": "Add {matcha_powder} scoops of matcha powder to the pitcher" },
+      { "n": 2.5, "text": "Add {pumps} pumps of {flavor} to the cup", "when": "has_modifier" },
+      { "n": 3.0, "text": "Steam the {milk} and matcha together" },
+      { "n": 4.0, "text": "Pour into the cup" },
+      { "n": 5.0, "text": "Purge and wipe the steam wand" },
+      { "n": 6.0, "text": "Cap, sleeve, and serve" }
+    ]
+  },
+
+  "iced": {
+    "usesMilk": true,
+    "usesIce": true,
+    "recipes": {
+      "tall":   { "matcha powder": 4 },
+      "grande": { "matcha powder": 5 },
+      "venti":  { "matcha powder": 6 }
+    },
+    "steps": [
+      { "n": 1.0, "text": "Add {matcha_powder} scoops of matcha powder to the shaker" },
+      { "n": 2.0, "text": "Add a small amount of water to the shaker" },
+      { "n": 2.5, "text": "Add {pumps} pumps of {flavor} to the shaker", "when": "has_modifier" },
+      { "n": 3.0, "text": "Shake until fully dissolved" },
+      { "n": 4.0, "text": "Fill the cup with ice up to the line" },
+      { "n": 5.0, "text": "Add ice to the shaker" },
+      { "n": 6.0, "text": "Shake the shaker 10 times" },
+      { "n": 7.0, "text": "Pour into cup" },
+      { "n": 8.0, "text": "Top off cup with {milk}" },
+      { "n": 9.0, "text": "Cap and serve" }
+    ]
+  }
+}

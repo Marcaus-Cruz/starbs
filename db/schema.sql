@@ -41,11 +41,21 @@ CREATE TABLE IF NOT EXISTS drink_steps (
   iced          BOOLEAN NOT NULL,
   step_number   NUMERIC NOT NULL,
   template      TEXT NOT NULL,
-  applies_when  TEXT CHECK (applies_when IN ('has_modifier','no_modifier')),
-  UNIQUE (drink_id, iced, step_number, applies_when)
+  applies_when  TEXT CHECK (applies_when IN ('has_modifier','no_modifier'))
 );
 
 CREATE INDEX IF NOT EXISTS idx_drink_steps_drink ON drink_steps(drink_id, iced, step_number);
+
+-- Partial unique indexes: Postgres treats NULL as distinct in UNIQUE constraints,
+-- so we need two indexes to enforce uniqueness across both "with" and "without"
+-- applies_when rows. Without this, ON CONFLICT DO NOTHING fails to dedupe the
+-- NULL rows and each seed run re-inserts them.
+CREATE UNIQUE INDEX IF NOT EXISTS uq_drink_steps_with_when
+  ON drink_steps (drink_id, iced, step_number, applies_when)
+  WHERE applies_when IS NOT NULL;
+CREATE UNIQUE INDEX IF NOT EXISTS uq_drink_steps_null_when
+  ON drink_steps (drink_id, iced, step_number)
+  WHERE applies_when IS NULL;
 
 -- Available milks. `is_default` flags which one is pre-selected in the POS
 -- for drinks whose default is this milk. Multiple milks can have

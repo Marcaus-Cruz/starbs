@@ -19,7 +19,7 @@ export const drinkCatalog: readonly DrinkCatalogEntry[] = [
   },
   {
     name: "Brown Sugar Oatmilk Shaken Espresso",
-    defaultMilk: "Oat",
+    defaultMilk: "Oatmilk",
     defaultIced: true,
     hasHot: false,
     hasIced: true,
@@ -46,7 +46,28 @@ export const drinkCatalog: readonly DrinkCatalogEntry[] = [
     hasIced: true,
   },
   {
+    name: "Honey Citrus Mint Tea",
+    defaultMilk: null,
+    defaultIced: false,
+    hasHot: true,
+    hasIced: false,
+  },
+  {
+    name: "Iced Shaken Espresso",
+    defaultMilk: "2%",
+    defaultIced: true,
+    hasHot: false,
+    hasIced: true,
+  },
+  {
     name: "Latte",
+    defaultMilk: "2%",
+    defaultIced: false,
+    hasHot: true,
+    hasIced: true,
+  },
+  {
+    name: "Matcha Latte",
     defaultMilk: "2%",
     defaultIced: false,
     hasHot: true,
