@@ -39,6 +39,7 @@ function unitFor(ingredient: string): string {
   const n = ingredient.toLowerCase();
   if (n === 'espresso') return 'shots';
   if (n.endsWith('sauce') || n.endsWith('syrup') || n === 'pumps') return 'pumps';
+  if (n.endsWith('powder')) return 'shakes';
   return 'units';
 }
 

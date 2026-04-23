@@ -2,7 +2,7 @@ import type { Size } from './types';
 
 export const sizes = ['short', 'tall', 'grande', 'venti', 'trenta'] as const satisfies readonly Size[];
 
-export const drinks = ['Latte', 'Mocha', 'Americano'] as const;
+export const drinks = ['Latte', 'Mocha', 'Americano', 'Brown Sugar Oatmilk Shaken Espresso'] as const;
 export type Drink = (typeof drinks)[number];
 
 export const milks = [
