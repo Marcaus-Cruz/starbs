@@ -39,7 +39,7 @@ const BUILTIN_PLACEHOLDERS = new Set(['shots', 'pumps', 'size', 'flavor', 'milk'
 // Infer the SQL unit from an ingredient name. Override by adding cases.
 function unitFor(ingredient: string): string {
   const n = ingredient.toLowerCase();
-  if (n === 'espresso') return 'shots';
+  if (n === 'espresso' || n === 'ristretto') return 'shots';
   if (n.endsWith('sauce') || n.endsWith('syrup') || n === 'pumps') return 'pumps';
   if (n.endsWith('powder')) return 'shakes';
   return 'units';

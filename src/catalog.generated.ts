@@ -44,12 +44,28 @@ export const drinkCatalog: readonly DrinkCatalogEntry[] = [
     recipeIngredients: ["chai syrup","classic syrup"],
   },
   {
+    name: "Cortado",
+    defaultMilk: "Whole",
+    defaultIced: false,
+    hasHot: true,
+    hasIced: false,
+    recipeIngredients: ["ristretto"],
+  },
+  {
     name: "Example Drink",
     defaultMilk: "2%",
     defaultIced: false,
     hasHot: true,
     hasIced: true,
     recipeIngredients: ["espresso","mocha sauce"],
+  },
+  {
+    name: "Flat White",
+    defaultMilk: "Whole",
+    defaultIced: false,
+    hasHot: true,
+    hasIced: false,
+    recipeIngredients: ["ristretto"],
   },
   {
     name: "Honey Citrus Mint Tea",
