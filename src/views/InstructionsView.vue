@@ -42,7 +42,11 @@ onMounted(async () => {
   <main class="instructions">
     <button @click="router.push('/pos')">← Back to POS</button>
 
-    <p v-if="loading">Loading…</p>
+    <div v-if="loading" class="spinner" aria-label="Loading">
+      <span class="dot"></span>
+      <span class="dot"></span>
+      <span class="dot"></span>
+    </div>
     <p v-else-if="error" class="error">Error: {{ error }}</p>
 
     <template v-else-if="order">
@@ -99,5 +103,38 @@ onMounted(async () => {
 }
 .error {
   color: #b00020;
+}
+
+.spinner {
+  display: flex;
+  justify-content: center;
+  gap: 0.4em;
+  padding: 1em;
+}
+
+.spinner .dot {
+  width: 0.5em;
+  height: 0.5em;
+  border-radius: 50%;
+  background: #006241;
+  animation: bounce 1.2s infinite ease-in-out both;
+}
+
+.spinner .dot:nth-child(2) {
+  animation-delay: 0.15s;
+}
+.spinner .dot:nth-child(3) {
+  animation-delay: 0.3s;
+}
+
+@keyframes bounce {
+  0%, 80%, 100% {
+    transform: scale(0.4);
+    opacity: 0.4;
+  }
+  40% {
+    transform: scale(1);
+    opacity: 1;
+  }
 }
 </style>
