@@ -170,13 +170,6 @@ h2 {
 button {
   font-size: 0.5em;
   margin: 0.25em;
-  padding: 0.5em 1em;
-  cursor: pointer;
-}
-
-button.active {
-  background: #006241;
-  color: white;
 }
 
 .results ul {

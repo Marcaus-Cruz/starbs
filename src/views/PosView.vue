@@ -165,15 +165,8 @@ h2 {
 button {
   font-size: 0.5em;
   margin: 0.25em;
-  padding: 0.5em 1em;
-  cursor: pointer;
   flex: 0 0 10vw;
   min-height: 4em;
-}
-
-button.active {
-  background: #006241;
-  color: white;
 }
 
 label.iced-active {
@@ -182,14 +175,7 @@ label.iced-active {
 }
 
 button.primary {
-  background: #006241;
-  color: white;
   padding: 0.75em 1.5em;
   font-size: 1em;
-}
-
-button.primary:disabled {
-  opacity: 0.4;
-  cursor: not-allowed;
 }
 </style>

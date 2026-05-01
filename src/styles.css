@@ -1,6 +1,16 @@
 :root {
   font-family: system-ui, -apple-system, sans-serif;
   color-scheme: light dark;
+
+  --btn-bg: #f5f5f5;
+  --btn-fg: #1a1a1a;
+  --btn-border: #d0d0d0;
+  --btn-hover-bg: #e8e8e8;
+  --btn-hover-border: #006241;
+  --btn-active-bg: #006241;
+  --btn-active-fg: #ffffff;
+  --btn-active-border: #006241;
+  --btn-disabled-opacity: 0.4;
 }
 
 body {
@@ -10,4 +20,38 @@ body {
 
 #app {
   min-height: 100vh;
+}
+
+button {
+  font: inherit;
+  background: var(--btn-bg);
+  color: var(--btn-fg);
+  border: 1px solid var(--btn-border);
+  border-radius: 4px;
+  padding: 0.5em 1em;
+  cursor: pointer;
+  transition: background-color 120ms ease, border-color 120ms ease, color 120ms ease;
+}
+
+button:hover:not(:disabled):not(.active):not(.primary) {
+  background: var(--btn-hover-bg);
+  border-color: var(--btn-hover-border);
+}
+
+button.active,
+button.primary {
+  background: var(--btn-active-bg);
+  color: var(--btn-active-fg);
+  border-color: var(--btn-active-border);
+}
+
+button.active:hover:not(:disabled),
+button.primary:hover:not(:disabled) {
+  background: #00563a;
+  border-color: #00563a;
+}
+
+button:disabled {
+  opacity: var(--btn-disabled-opacity);
+  cursor: not-allowed;
 }
