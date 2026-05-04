@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, computed } from "vue";
+import { ref } from "vue";
 import { useRouter } from "vue-router";
 import type { Size } from "../types";
 import {
@@ -20,15 +20,6 @@ const selectedSize = ref<Size>("grande");
 const iced = ref(false);
 const selectedModifiers = ref<Modifier[]>([]);
 const selectedMilk = ref<Milk>("2%");
-
-const currentEntry = computed(
-  () => drinkCatalog.find((d) => d.name === selectedDrink.value) ?? null,
-);
-const icedLocked = computed(() => {
-  const e = currentEntry.value;
-  if (!e) return false;
-  return !(e.hasHot && e.hasIced);
-});
 
 function selectDrink(drink: Drink) {
   selectedDrink.value = drink;
@@ -93,8 +84,8 @@ function placeOrder() {
     </section>
 
     <section>
-      <label :class="{ 'iced-active': iced, 'iced-locked': icedLocked }">
-        <input type="checkbox" v-model="iced" :disabled="icedLocked" />
+      <label :class="{ 'iced-active': iced }">
+        <input type="checkbox" v-model="iced" />
         Iced
       </label>
     </section>
@@ -167,6 +158,14 @@ button {
   margin: 0.25em;
   flex: 0 0 10vw;
   min-height: 4em;
+}
+
+label {
+  cursor: pointer;
+}
+
+label input[type="checkbox"] {
+  cursor: pointer;
 }
 
 label.iced-active {
