@@ -18,7 +18,7 @@ INSERT INTO milks (name, is_default) VALUES
 ON CONFLICT (name) DO NOTHING;
 
 -- Modifiers. Standard syrups/sauces share the same per-size pump counts:
--- short=2, tall=3, grande=4, venti=5.
+-- short=2, tall=3, grande=4, venti=5. Toppings are separate — no pump ladder.
 INSERT INTO modifiers (name) VALUES
   ('Vanilla Syrup'),
   ('Sugar-Free Vanilla Syrup'),
@@ -27,9 +27,11 @@ INSERT INTO modifiers (name) VALUES
   ('Brown Sugar Syrup'),
   ('Mocha Sauce'),
   ('White Mocha Sauce'),
-  ('Toasted Coconut Syrup')
+  ('Toasted Coconut Syrup'),
+  ('Cookie Crunch')
 ON CONFLICT (name) DO NOTHING;
 
+-- Pumped syrups/sauces: standard 2/3/4/5 ladder per size.
 INSERT INTO modifier_recipes (modifier_id, size, quantity, unit)
 SELECT m.id, v.size, v.pumps, 'pumps'
 FROM modifiers m
@@ -39,4 +41,15 @@ CROSS JOIN (VALUES
   ('grande', 4),
   ('venti',  5)
 ) AS v(size, pumps)
+WHERE m.name NOT IN ('Cookie Crunch')
+ON CONFLICT DO NOTHING;
+
+-- Toppings: one application per drink, regardless of size.
+INSERT INTO modifier_recipes (modifier_id, size, quantity, unit)
+SELECT m.id, v.size, 1, 'topping'
+FROM modifiers m
+CROSS JOIN (VALUES
+  ('short'), ('tall'), ('grande'), ('venti')
+) AS v(size)
+WHERE m.name IN ('Cookie Crunch')
 ON CONFLICT DO NOTHING;

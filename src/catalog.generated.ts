@@ -107,4 +107,12 @@ export const drinkCatalog: readonly DrinkCatalogEntry[] = [
     hasIced: true,
     recipeIngredients: ["espresso","mocha sauce"],
   },
+  {
+    name: "Mocha Cookie Crunch Frappuccino",
+    defaultMilk: "Whole",
+    defaultIced: true,
+    hasHot: false,
+    hasIced: true,
+    recipeIngredients: ["choco chips","frap base","frap roast"],
+  },
 ] as const;
