@@ -1,0 +1,25 @@
+{
+  "name": "Mango Strawberry Refresher",
+  "category": "refresher",
+  "defaultIced": true,
+  "iced": {
+    "usesIce": true,
+    "recipes": {
+      "tall":   { "strawberry inclusions": 1, "mango syrup": 1, "green tea extract": 1 },
+      "grande": { "strawberry inclusions": 1, "mango syrup": 2, "green tea extract": 2 },
+      "venti":  { "strawberry inclusions": 1, "mango syrup": 3, "green tea extract": 3 },
+      "trenta": { "strawberry inclusions": 2, "mango syrup": 4, "green tea extract": 4 }
+    },
+    "steps": [
+      { "n": 1.0, "text": "Pour strawberry acai to the base line of the shaker" },
+      { "n": 2.0, "text": "Pour water, lemonade, or coconut milk to the lemonade line" },
+      { "n": 3.0, "text": "Add {mango_syrup} pumps of mango syrup" },
+      { "n": 4.0, "text": "Add {green_tea_extract} pumps of green tea extract" },
+      { "n": 5.0, "text": "Add {strawberry_inclusions} scoops of strawberry inclusions" },
+      { "n": 5.5, "text": "Add {pumps} pumps of {flavor}", "when": "has_modifier" },
+      { "n": 6.0, "text": "Add ice" },
+      { "n": 7.0, "text": "Shake 10 times" },
+      { "n": 8.0, "text": "Pour into cup" }
+    ]
+  }
+}
