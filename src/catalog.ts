@@ -28,6 +28,13 @@ export const modifiers = [
   'Mocha Sauce',
   'White Mocha Sauce',
   'Toasted Coconut Syrup',
+  'Dark Caramel',
+  'Mango Syrup',
+  'Green Tea Extract',
+  'Frap Roast',
+  'Frap Base',
+  'Strawberry Inclusions',
+  'Dragonfruit Inclusions',
   'Cookie Crunch',
 ] as const;
 export type Modifier = (typeof modifiers)[number];
