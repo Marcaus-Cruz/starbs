@@ -260,6 +260,7 @@ const catalogBody = catalogEntries
     const hasIced = d.iced !== undefined;
     return `  {
     name: ${JSON.stringify(d.name)},
+    category: ${JSON.stringify(d.category ?? null)},
     defaultMilk: ${JSON.stringify(d.defaultMilk ?? null)},
     defaultIced: ${JSON.stringify(d.defaultIced ?? false)},
     hasHot: ${hasHot},
@@ -273,6 +274,7 @@ const catalogTs =
   catalogHeader +
   `export interface DrinkCatalogEntry {
   name: string;
+  category: string | null;
   defaultMilk: string | null;
   defaultIced: boolean;
   hasHot: boolean;

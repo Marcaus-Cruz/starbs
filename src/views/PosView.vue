@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref } from "vue";
+import { computed, ref } from "vue";
 import { useRouter } from "vue-router";
 import type { Size } from "../types";
 import {
@@ -12,6 +12,22 @@ import {
   type Modifier,
 } from "../catalog";
 import { drinkCatalog } from "../catalog.generated";
+
+const drinkGroups = computed(() => {
+  const groups: { label: string; drinks: Drink[] }[] = [
+    { label: "Espresso", drinks: [] },
+    { label: "Tea", drinks: [] },
+    { label: "Other", drinks: [] },
+  ];
+  for (const drink of drinks) {
+    const entry = drinkCatalog.find((d) => d.name === drink);
+    const category = entry?.category;
+    if (category === "espresso") groups[0].drinks.push(drink);
+    else if (category === "tea") groups[1].drinks.push(drink);
+    else groups[2].drinks.push(drink);
+  }
+  return groups.filter((g) => g.drinks.length > 0);
+});
 
 const router = useRouter();
 
@@ -63,10 +79,10 @@ function placeOrder() {
       </div>
     </section>
     
-    <section>
-      <h2>Drink</h2>
+    <section v-for="group in drinkGroups" :key="group.label" class="drink-group">
+      <h2>{{ group.label }}</h2>
       <button
-        v-for="drink in drinks"
+        v-for="drink in group.drinks"
         :key="drink"
         :class="{ active: selectedDrink === drink }"
         @click="selectDrink(drink)"

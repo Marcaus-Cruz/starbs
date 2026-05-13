@@ -3,6 +3,7 @@
 
 export interface DrinkCatalogEntry {
   name: string;
+  category: string | null;
   defaultMilk: string | null;
   defaultIced: boolean;
   hasHot: boolean;
@@ -13,6 +14,7 @@ export interface DrinkCatalogEntry {
 export const drinkCatalog: readonly DrinkCatalogEntry[] = [
   {
     name: "Americano",
+    category: "espresso",
     defaultMilk: null,
     defaultIced: false,
     hasHot: true,
@@ -21,6 +23,7 @@ export const drinkCatalog: readonly DrinkCatalogEntry[] = [
   },
   {
     name: "Brown Sugar Oatmilk Shaken Espresso",
+    category: "espresso",
     defaultMilk: "Oatmilk",
     defaultIced: true,
     hasHot: false,
@@ -29,6 +32,7 @@ export const drinkCatalog: readonly DrinkCatalogEntry[] = [
   },
   {
     name: "Caramel Macchiato",
+    category: "espresso",
     defaultMilk: "2%",
     defaultIced: false,
     hasHot: true,
@@ -37,6 +41,7 @@ export const drinkCatalog: readonly DrinkCatalogEntry[] = [
   },
   {
     name: "Caramel Ribbon Crunch Frappuccino",
+    category: "frappuccino",
     defaultMilk: "Whole",
     defaultIced: true,
     hasHot: false,
@@ -45,6 +50,7 @@ export const drinkCatalog: readonly DrinkCatalogEntry[] = [
   },
   {
     name: "Chai Latte",
+    category: "tea",
     defaultMilk: "2%",
     defaultIced: false,
     hasHot: true,
@@ -53,6 +59,7 @@ export const drinkCatalog: readonly DrinkCatalogEntry[] = [
   },
   {
     name: "Cortado",
+    category: "espresso",
     defaultMilk: "Whole",
     defaultIced: false,
     hasHot: true,
@@ -61,6 +68,7 @@ export const drinkCatalog: readonly DrinkCatalogEntry[] = [
   },
   {
     name: "Example Drink",
+    category: "espresso",
     defaultMilk: "2%",
     defaultIced: false,
     hasHot: true,
@@ -69,6 +77,7 @@ export const drinkCatalog: readonly DrinkCatalogEntry[] = [
   },
   {
     name: "Flat White",
+    category: "espresso",
     defaultMilk: "Whole",
     defaultIced: false,
     hasHot: true,
@@ -77,6 +86,7 @@ export const drinkCatalog: readonly DrinkCatalogEntry[] = [
   },
   {
     name: "Honey Citrus Mint Tea",
+    category: "tea",
     defaultMilk: null,
     defaultIced: false,
     hasHot: true,
@@ -85,6 +95,7 @@ export const drinkCatalog: readonly DrinkCatalogEntry[] = [
   },
   {
     name: "Iced Shaken Espresso",
+    category: "espresso",
     defaultMilk: "2%",
     defaultIced: true,
     hasHot: false,
@@ -93,6 +104,7 @@ export const drinkCatalog: readonly DrinkCatalogEntry[] = [
   },
   {
     name: "Latte",
+    category: "espresso",
     defaultMilk: "2%",
     defaultIced: false,
     hasHot: true,
@@ -101,6 +113,7 @@ export const drinkCatalog: readonly DrinkCatalogEntry[] = [
   },
   {
     name: "Mango Dragonfruit Energy Refresher",
+    category: "refresher",
     defaultMilk: null,
     defaultIced: true,
     hasHot: false,
@@ -109,6 +122,7 @@ export const drinkCatalog: readonly DrinkCatalogEntry[] = [
   },
   {
     name: "Mango Dragonfruit Refresher",
+    category: "refresher",
     defaultMilk: null,
     defaultIced: true,
     hasHot: false,
@@ -117,6 +131,7 @@ export const drinkCatalog: readonly DrinkCatalogEntry[] = [
   },
   {
     name: "Mango Strawberry Energy Refresher",
+    category: "refresher",
     defaultMilk: null,
     defaultIced: true,
     hasHot: false,
@@ -125,6 +140,7 @@ export const drinkCatalog: readonly DrinkCatalogEntry[] = [
   },
   {
     name: "Mango Strawberry Refresher",
+    category: "refresher",
     defaultMilk: null,
     defaultIced: true,
     hasHot: false,
@@ -133,6 +149,7 @@ export const drinkCatalog: readonly DrinkCatalogEntry[] = [
   },
   {
     name: "Matcha Latte",
+    category: "tea",
     defaultMilk: "2%",
     defaultIced: false,
     hasHot: true,
@@ -141,6 +158,7 @@ export const drinkCatalog: readonly DrinkCatalogEntry[] = [
   },
   {
     name: "Mocha",
+    category: "espresso",
     defaultMilk: "2%",
     defaultIced: false,
     hasHot: true,
@@ -149,6 +167,7 @@ export const drinkCatalog: readonly DrinkCatalogEntry[] = [
   },
   {
     name: "Mocha Cookie Crunch Frappuccino",
+    category: "frappuccino",
     defaultMilk: "Whole",
     defaultIced: true,
     hasHot: false,
@@ -157,6 +176,7 @@ export const drinkCatalog: readonly DrinkCatalogEntry[] = [
   },
   {
     name: "Strawberry Acai Energy Refresher",
+    category: "refresher",
     defaultMilk: null,
     defaultIced: true,
     hasHot: false,
@@ -165,6 +185,7 @@ export const drinkCatalog: readonly DrinkCatalogEntry[] = [
   },
   {
     name: "Strawberry Acai Refresher",
+    category: "refresher",
     defaultMilk: null,
     defaultIced: true,
     hasHot: false,
