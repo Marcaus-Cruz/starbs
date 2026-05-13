@@ -36,6 +36,14 @@ export const drinkCatalog: readonly DrinkCatalogEntry[] = [
     recipeIngredients: ["caramel drizzle","espresso","vanilla syrup"],
   },
   {
+    name: "Caramel Ribbon Crunch Frappuccino",
+    defaultMilk: "Whole",
+    defaultIced: true,
+    hasHot: false,
+    hasIced: true,
+    recipeIngredients: ["dark caramel","frap base","frap roast"],
+  },
+  {
     name: "Chai Latte",
     defaultMilk: "2%",
     defaultIced: false,

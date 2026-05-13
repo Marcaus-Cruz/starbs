@@ -43,6 +43,7 @@ function unitFor(ingredient: string): string {
   if (n.endsWith('sauce') || n.endsWith('syrup') || n === 'pumps') return 'pumps';
   if (n === 'frap roast' || n === 'frap base') return 'pumps';
   if (n === 'green tea extract') return 'pumps';
+  if (n === 'dark caramel') return 'pumps';
   if (n === 'choco chips' || n.endsWith('inclusions')) return 'scoops';
   if (n.endsWith('powder')) return 'shakes';
   return 'units';

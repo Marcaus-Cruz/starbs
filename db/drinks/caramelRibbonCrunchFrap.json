@@ -1,0 +1,32 @@
+{
+  "name": "Caramel Ribbon Crunch Frappuccino",
+  "category": "frappuccino",
+  "defaultMilk": "Whole",
+  "defaultIced": true,
+  "iced": {
+    "usesMilk": true,
+    "usesIce": true,
+    "recipes": {
+      "tall":   { "frap roast": 2, "frap base": 2, "dark caramel": 3 },
+      "grande": { "frap roast": 3, "frap base": 3, "dark caramel": 5 },
+      "venti":  { "frap roast": 4, "frap base": 4, "dark caramel": 6 }
+    },
+    "steps": [
+      { "n": 1.0, "text": "Add {frap_roast} pumps of frap roast to the cup" },
+      { "n": 2.0, "text": "Fill the cup with {milk} to the bottom line" },
+      { "n": 3.0, "text": "Pour the cup contents into the blender pitcher" },
+      { "n": 4.0, "text": "Add a level scoop of ice to the pitcher" },
+      { "n": 5.0, "text": "Add {frap_base} pumps of frap base to the pitcher" },
+      { "n": 6.0, "text": "Add {dark_caramel} pumps of dark caramel to the pitcher" },
+      { "n": 6.5, "text": "Add {pumps} pumps of {flavor} to the pitcher", "when": "has_modifier" },
+      { "n": 7.0, "text": "Cover and blend on setting #1" },
+      { "n": 8.0, "text": "Add a layer of whipped cream to the bottom of the cup" },
+      { "n": 9.0, "text": "Top the whipped cream with caramel crunch topping" },
+      { "n": 10.0, "text": "Pour the blended mixture into the cup" },
+      { "n": 11.0, "text": "Top with whipped cream" },
+      { "n": 12.0, "text": "Drizzle with caramel" },
+      { "n": 13.0, "text": "Top with caramel crunch topping" },
+      { "n": 14.0, "text": "Cap and serve" }
+    ]
+  }
+}
