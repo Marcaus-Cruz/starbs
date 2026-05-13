@@ -27,7 +27,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
         SELECT DISTINCT d.name
         FROM drinks d
         JOIN drink_recipes r ON r.drink_id = d.id
-        WHERE r.ingredient = ${value}
+        WHERE LOWER(r.ingredient) = LOWER(${value})
         ORDER BY d.name
       `;
     } else {

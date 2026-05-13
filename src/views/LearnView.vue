@@ -2,24 +2,13 @@
 import { ref, computed, watch } from "vue";
 import { useRouter } from "vue-router";
 import { drinkCatalog } from "../catalog.generated";
-import { milks as milkCatalog } from "../catalog";
+import { milks as milkCatalog, modifiers as modifierCatalog } from "../catalog";
 
 type Kind = "syrup" | "milk";
 
 const router = useRouter();
 
-// Derive picker lists from the catalog (instant, no API call).
-const syrups = computed(() => {
-  const set = new Set<string>();
-  for (const d of drinkCatalog) {
-    for (const ing of d.recipeIngredients) {
-      const lower = ing.toLowerCase();
-      if (lower.includes("syrup") || lower.includes("sauce")) set.add(ing);
-    }
-  }
-  return [...set].sort();
-});
-
+const syrups = computed(() => [...modifierCatalog]);
 const milks = computed(() => [...milkCatalog]);
 
 const selectedKind = ref<Kind | null>(null);
@@ -72,9 +61,10 @@ function openDrink(name: string) {
 }
 
 const heading = computed(() => {
-  if (!selectedKind.value || !selectedValue.value) return "Pick an ingredient";
-  const kindLabel = selectedKind.value === "syrup" ? "use" : "default to";
-  return `Drinks that ${kindLabel} ${selectedValue.value}`;
+  if (!selectedKind.value || !selectedValue.value) return "Pick a modifier or milk";
+  const kindLabel =
+    selectedKind.value === "syrup" ? "include" : "default to";
+  return `Drinks that ${kindLabel} ${selectedValue.value} by default`;
 });
 </script>
 
@@ -88,7 +78,7 @@ const heading = computed(() => {
     <div class="layout">
       <aside class="picker">
         <section>
-          <h2>Syrups & sauces</h2>
+          <h2>Modifiers</h2>
           <button
             v-for="s in syrups"
             :key="s"
