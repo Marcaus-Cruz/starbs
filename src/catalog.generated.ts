@@ -92,6 +92,22 @@ export const drinkCatalog: readonly DrinkCatalogEntry[] = [
     recipeIngredients: ["espresso"],
   },
   {
+    name: "Mango Dragonfruit Energy Refresher",
+    defaultMilk: null,
+    defaultIced: true,
+    hasHot: false,
+    hasIced: true,
+    recipeIngredients: ["dragonfruit inclusions","green tea extract"],
+  },
+  {
+    name: "Mango Dragonfruit Refresher",
+    defaultMilk: null,
+    defaultIced: true,
+    hasHot: false,
+    hasIced: true,
+    recipeIngredients: ["dragonfruit inclusions","green tea extract"],
+  },
+  {
     name: "Mango Strawberry Energy Refresher",
     defaultMilk: null,
     defaultIced: true,

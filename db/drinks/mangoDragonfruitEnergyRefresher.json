@@ -1,0 +1,24 @@
+{
+  "name": "Mango Dragonfruit Energy Refresher",
+  "category": "refresher",
+  "defaultIced": true,
+  "iced": {
+    "usesIce": true,
+    "recipes": {
+      "tall":   { "dragonfruit inclusions": 1, "green tea extract": 4 },
+      "grande": { "dragonfruit inclusions": 1, "green tea extract": 5 },
+      "venti":  { "dragonfruit inclusions": 1, "green tea extract": 6 },
+      "trenta": { "dragonfruit inclusions": 2, "green tea extract": 7 }
+    },
+    "steps": [
+      { "n": 1.0, "text": "Pour mango dragonfruit to the base line of the shaker" },
+      { "n": 2.0, "text": "Pour water, lemonade, or coconut milk to the lemonade line" },
+      { "n": 3.0, "text": "Add {green_tea_extract} pumps of green tea extract" },
+      { "n": 4.0, "text": "Add {dragonfruit_inclusions} scoops of dragonfruit inclusions" },
+      { "n": 4.5, "text": "Add {pumps} pumps of {flavor}", "when": "has_modifier" },
+      { "n": 5.0, "text": "Add ice" },
+      { "n": 6.0, "text": "Shake 10 times" },
+      { "n": 7.0, "text": "Pour into cup" }
+    ]
+  }
+}
